@@ -1,0 +1,106 @@
+.lc-tabs {
+    margin-bottom: 20px;
+}
+.lc-tab-button {
+    padding: 10px 20px;
+    background: #f1f1f1;
+    border: none;
+    cursor: pointer;
+    margin-right: 5px;
+}
+.lc-tab-button.active {
+    background: #0073aa;
+    color: #fff;
+}
+.lc-tab-content {
+    display: none;
+}
+.lc-tab-content.active {
+    display: block;
+}
+
+
+
+
+#cl-wpmethods-repeater-fields {
+    margin-bottom: 20px;
+}
+
+label.cl-label-wpm {
+    margin-bottom: 5px;
+}
+
+.cl-wpmethods-field-group {
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 10px;
+    cursor: move;
+    display: grid;
+    grid-template-columns: 50px 1fr 1fr 1fr 1fr 1fr auto;
+    align-items: center;
+    gap: 10px;
+}
+
+.cl-wpmethods-preview-icon {
+    width: 40px;
+    height: 40px;
+    background: #eee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    border-radius: 50%;
+}
+
+.cl-wpmethods-field-group input {
+    padding: 8px;
+    width: 100%;
+}
+
+.flex-cl-wpmethods{
+    display: flex;
+    flex-direction: column;
+}
+
+.cl-wpmethods-remove-field {
+    background: #e53935;
+    color: #fff;
+    border: none;
+    padding: 8px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+#cl-wpmethods-add-field {
+    background: #43a047;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.sortable-ghost {
+    opacity: 0.4;
+}
+
+
+@media (max-width: 720px) {
+
+    .cl-wpmethods-preview-icon {
+        width: 80px;
+        margin: 0px auto;
+        height: 80px;
+        font-size: 60px;
+        border-radius: 10%;
+    }
+    .cl-wpmethods-field-group {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        /* Two columns */
+        gap: 10px;
+        /* Optional: spacing between items */
+    }
+}
+
