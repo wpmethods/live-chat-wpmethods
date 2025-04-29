@@ -75,7 +75,7 @@ class Admin_Settings
 
             <div class="lc-tabs">
                 <button class="lc-tab-button active" data-tab="general"><?php esc_html_e('Icons & Links', 'lc-wpmethods'); ?></button>
-                <button class="lc-tab-button" data-tab="style"><?php esc_html_e('Styles', 'lc-wpmethods'); ?></button>
+                <button class="lc-tab-button" data-tab="style"><?php esc_html_e('Widget Styles', 'lc-wpmethods'); ?></button>
             </div>
 
             <form method="post" action="options.php">
@@ -88,7 +88,7 @@ class Admin_Settings
                             <?php foreach ($lc_wpmethods_links as $index => $link) : ?>
                                 <div class="cl-wpmethods-field-group">
                                     <div class="cl-wpmethods-preview-icon">
-                                        <i class="<?php echo esc_attr($link['icon'] ?? 'fas fa-comment-dots'); ?>"></i>
+                                        <i class="<?php echo esc_attr($link['icon'] ?? 'fab fa-whatsapp'); ?>"></i>
                                     </div>
 
                                     <div class="flex-cl-wpmethods">
@@ -107,12 +107,12 @@ class Admin_Settings
                                     </div>
 
                                     <div class="flex-cl-wpmethods">
-                                        <label for="cl-color-<?php echo esc_attr($index); ?>" class="cl-label-wpm">Pick Icon Color</label>
+                                        <label for="cl-color-<?php echo esc_attr($index); ?>" class="cl-label-wpm">Icon Color</label>
                                         <input type="text" id="cl-color-<?php echo esc_attr($index); ?>" name="lc_wpmethods_settings[lc_wpmethods_links][<?php echo esc_attr($index); ?>][color]" value="<?php echo esc_attr($link['color'] ?? ''); ?>" class="color-picker" placeholder="Pick Icon Color" />
                                     </div>
 
                                     <div class="flex-cl-wpmethods">
-                                        <label for="cl-bgcolor-<?php echo esc_attr($index); ?>" class="cl-label-wpm">Pick Background Color</label>
+                                        <label for="cl-bgcolor-<?php echo esc_attr($index); ?>" class="cl-label-wpm">Background Color</label>
                                         <input type="text" id="cl-bgcolor-<?php echo esc_attr($index); ?>" name="lc_wpmethods_settings[lc_wpmethods_links][<?php echo esc_attr($index); ?>][bg_color]" value="<?php echo esc_attr($link['bg_color'] ?? ''); ?>" class="color-picker" placeholder="Pick Background Color" />
                                     </div>
 
@@ -123,7 +123,7 @@ class Admin_Settings
                         <?php else : ?>
                             <div class="cl-wpmethods-field-group">
                                 <div class="cl-wpmethods-preview-icon">
-                                    <i class="fas fa-comment-dots"></i>
+                                    <i class="fab fa-whatsapp"></i>
                                 </div>
 
                                 <div class="flex-cl-wpmethods">
@@ -142,12 +142,12 @@ class Admin_Settings
                                 </div>
 
                                 <div class="flex-cl-wpmethods">
-                                    <label for="cl-color-0" class="cl-label-wpm">Pick Icon Color</label>
+                                    <label for="cl-color-0" class="cl-label-wpm">Icon Color</label>
                                     <input type="text" id="cl-color-0" name="lc_wpmethods_settings[lc_wpmethods_links][0][color]" class="color-picker" placeholder="Pick Icon Color" />
                                 </div>
 
                                 <div class="flex-cl-wpmethods">
-                                    <label for="cl-bgcolor-0" class="cl-label-wpm">Pick Background Color</label>
+                                    <label for="cl-bgcolor-0" class="cl-label-wpm">Background Color</label>
                                     <input type="text" id="cl-bgcolor-0" name="lc_wpmethods_settings[lc_wpmethods_links][0][bg_color]" class="color-picker" placeholder="Pick Background Color" />
                                 </div>
 
@@ -162,7 +162,7 @@ class Admin_Settings
                 <div class="lc-tab-content" id="tab-style">
                     <table class="form-table">
                         <tr valign="top">
-                            <th scope="row"><?php esc_html_e('Toggle Button Color', 'lc-wpmethods'); ?></th>
+                            <th scope="row"><?php esc_html_e('Main Button Background', 'lc-wpmethods'); ?></th>
                             <td><input type="text" name="lc_wpmethods_settings[toggle_bg_color]" value="<?php echo esc_attr($options['toggle_bg_color'] ?? '#00DA62'); ?>" class="color-field" /></td>
                         </tr>
                         <tr valign="top">
@@ -172,6 +172,11 @@ class Admin_Settings
                         <tr valign="top">
                             <th scope="row"><?php esc_html_e('Hover Color', 'lc-wpmethods'); ?></th>
                             <td><input type="text" name="lc_wpmethods_settings[hover_color]" value="<?php echo esc_attr($options['hover_color'] ?? '#128C7E'); ?>" class="color-field" /></td>
+                        </tr>
+
+                        <tr valign="top">
+                            <th scope="row"><?php esc_html_e('Pulse Animation Circle', 'lc-wpmethods'); ?></th>
+                            <td><input type="text" name="lc_wpmethods_settings[pulse_animation_border_color]" value="<?php echo esc_attr($options['pulse_animation_border_color'] ?? '#128C7E'); ?>" class="color-field" /></td>
                         </tr>
                     </table>
                 </div>
@@ -190,7 +195,7 @@ class Admin_Settings
                 }
 
                 function updateIconPreview(input) {
-                    const iconClass = input.value.trim() || 'fas fa-comment-dots';
+                    const iconClass = input.value.trim() || 'fab fa-whatsapp';
                     const preview = input.closest('.cl-wpmethods-field-group').querySelector('.cl-wpmethods-preview-icon i');
                     preview.className = iconClass;
                 }
@@ -202,7 +207,7 @@ class Admin_Settings
                     fieldGroup.className = 'cl-wpmethods-field-group';
                     fieldGroup.innerHTML = `
                         <div class="cl-wpmethods-preview-icon">
-                            <i class="fas fa-comment-dots"></i>
+                            <i class="fab fa-whatsapp"></i>
                         </div>
                         <div class="flex-cl-wpmethods">
                             <label for="cl-url-${counter}">Enter URL</label>
@@ -220,12 +225,12 @@ class Admin_Settings
                         </div>
 
                         <div class="flex-cl-wpmethods">
-                            <label for="cl-color-${counter}">Pick Icon Color</label>
+                            <label for="cl-color-${counter}">Icon Color</label>
                             <input type="text" id="cl-color-${counter}" name="lc_wpmethods_settings[lc_wpmethods_links][${counter}][color]" class="color-picker" placeholder="Pick Icon Color" />
                         </div>
 
                         <div class="flex-cl-wpmethods">
-                            <label for="cl-bgcolor-${counter}">Pick Background Color</label>
+                            <label for="cl-bgcolor-${counter}">Background Color</label>
                             <input type="text" id="cl-bgcolor-${counter}" name="lc_wpmethods_settings[lc_wpmethods_links][${counter}][bg_color]" class="color-picker" placeholder="Pick Background Color" />
                         </div>
                         <button type="button" class="cl-wpmethods-remove-field">Remove</button>

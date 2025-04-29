@@ -9,8 +9,6 @@
 }
 
 .lc-wpmethods-chat-toggle {
-    background-color: #00DA62;
-    color: white;
     width: 45px;
     height: 45px;
     border-radius: 50%;
@@ -101,23 +99,6 @@
 
 .lc-wpmethods-chat-btn.telegram {
     background: linear-gradient(135deg, #0088cc, #005f8e);
-}
-
-@keyframes lc-wpmethods-pulse {
-    0% {
-        transform: scale(1);
-        box-shadow: 0 0 0 0 rgba(3, 215, 39, 0.7);
-    }
-
-    70% {
-        transform: scale(1.2);
-        box-shadow: 0 0 0 14px rgba(242, 105, 34, 0);
-    }
-
-    100% {
-        transform: scale(1);
-        box-shadow: 0 0 0 0 rgba(242, 105, 34, 0);
-    }
 }
 
 .lc-wpmethods-pulse {

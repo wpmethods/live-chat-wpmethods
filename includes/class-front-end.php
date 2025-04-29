@@ -19,29 +19,37 @@ class Front_End {
     }
 
     public function render_chat_buttons()
-    {
-        // Load settings
+    {// Load settings
         $options = get_option('lc_wpmethods_settings');
-        $lc_wpmethods_links = $options['lc_wpmethods_links'] ?? []; // repeater field
 
-        $toggle_color = $options['toggle_bg_color'] ?? '#00DA62';
-        $icon_color = $options['icon_color'] ?? '#FFFFFF';
-        $hover_color = $options['hover_color'] ?? '#128C7E';
+        // Repeater field should be an array of arrays
+        $lc_wpmethods_links = $options['lc_wpmethods_links'] ?? [[
+            'url' => 'https://wa.me/88017900000',
+            'icon' => 'fab fa-whatsapp',
+            'label' => 'WhatsApp',
+            'color' => '#ffffff',
+            'bg_color' => 'linear-gradient(135deg, #25D366, #128C7E)',
+        ]];
 
-        if (empty($lc_wpmethods_links)) {
+        $toggle_color = $options['toggle_bg_color'] ? $options['toggle_bg_color'] : '#00DA62';
+        $icon_color = $options['icon_color'] ? $options['icon_color'] : '#FFFFFF';
+        $hover_color = $options['hover_color'] ?  $options['hover_color'] : '#128C7E';
+        $pulse_animation_border_color = $options['pulse_animation_border_color'] ?  $options['pulse_animation_border_color'] : '#25D366';
+
+        if (empty($lc_wpmethods_links) || !is_array($lc_wpmethods_links)) {
             return; // Nothing to render
         }
-
         ?>
+
         <div class="lc-wpmethods-chat-container" id="lcWpmethodsChatContainer">
             <div class="lc-wpmethods-chat-options" id="chatOptions">
                 <?php foreach ($lc_wpmethods_links as $link) : 
-                    $url = $link['url'] ?? '';
-                    $icon_class = $link['icon'] ?? 'fas fa-comment-dots';
-                    $label = $link['label'] ?? '';
-                    $color = $link['color'] ?? '';
-                    $bg_color = $link['bg_color'] ?? '';
-                    
+                    $url = !empty($link['url']) ? $link['url'] : 'https://wa.me/your-whatsapp-number';
+                    $icon_class = !empty($link['icon']) ? $link['icon'] : 'fab fa-whatsapp';
+                    $label = !empty($link['label']) ? $link['label'] : 'WhatsApp';
+                    $color = !empty($link['color']) ? $link['color'] : '#ffffff';
+                    $bg_color = !empty($link['bg_color']) ? $link['bg_color'] : 'linear-gradient(135deg, #25D366, #128C7E)';
+
                     if (empty($url) || empty($icon_class)) {
                         continue;
                     }
@@ -52,9 +60,37 @@ class Front_End {
                 <?php endforeach; ?>
             </div>
 
-            <div class="lc-wpmethods-chat-toggle lc-wpmethods-pulse" id="lcWpmethodsChatToggle" style="background: <?php echo esc_attr($toggle_color); ?>;">
-                <i class="fas fa-comment-dots" id="lcWpmethodsChatIcon" style="color: <?php echo esc_attr($icon_color); ?>;"></i>
+            <div class="lc-wpmethods-chat-toggle lc-wpmethods-pulse" id="lcWpmethodsChatToggle">
+                <i class="fas fa-comment-dots" id="lcWpmethodsChatIcon"></i>
             </div>
+
+            <style>
+                .lc-wpmethods-chat-toggle{
+                    color: <?php echo esc_attr($icon_color); ?>;
+                    background: <?php echo esc_attr($toggle_color); ?>;
+                }
+                .lc-wpmethods-chat-toggle:hover{
+                    background: <?php echo esc_attr($hover_color); ?>;
+                }
+
+
+                @keyframes lc-wpmethods-pulse {
+                    0% {
+                        box-shadow: 0 0 0 0 <?php echo esc_attr($pulse_animation_border_color); ?>;
+                        transform: scale(1);
+                    }
+
+                    70% {
+                        transform: scale(1.2);
+                        box-shadow: 0 0 0 7px rgba(242, 105, 34, 0);
+                    }
+
+                    100% {
+                        transform: scale(1);
+                        box-shadow: 0 0 0 0 rgba(242, 105, 34, 0);
+                    }
+                }
+            </style>
         </div>
         <?php
     }
