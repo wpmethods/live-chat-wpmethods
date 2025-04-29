@@ -17,8 +17,8 @@ class Admin_Settings
     public function add_menu_page()
     {
         add_menu_page(
-            __('Live Chat WPMethods', 'lc-wpmethods'),
-            __('Live Chat', 'lc-wpmethods'),
+            __('Social Floating Icon', 'lc-wpmethods'),
+            __('Social Floating Icon', 'lc-wpmethods'),
             'manage_options',
             'lc-wpmethods-settings',
             [$this, 'settings_page'],
@@ -39,6 +39,7 @@ class Admin_Settings
         wp_enqueue_style('fontawesome', LC_WPMETHODS_URL . 'assets/css/all.min.css', [], '6.7.2');
     }
 
+
     public function register_settings()
     {
         register_setting('lc_wpmethods_settings_group', 'lc_wpmethods_settings', [
@@ -54,6 +55,7 @@ class Admin_Settings
                 $link['icon']  = sanitize_text_field($link['icon'] ?? '');
                 $link['label'] = sanitize_text_field($link['label'] ?? '');
                 $link['color'] = sanitize_hex_color($link['color'] ?? '');
+                $link['bg_color'] = sanitize_hex_color($link['bg_color'] ?? '');
             }
         }
 
@@ -61,6 +63,7 @@ class Admin_Settings
         $settings['toggle_bg_color'] = sanitize_hex_color($settings['toggle_bg_color'] ?? '');
         $settings['icon_color'] = sanitize_hex_color($settings['icon_color'] ?? '');
         $settings['hover_color'] = sanitize_hex_color($settings['hover_color'] ?? '');
+        $settings['custom_text'] = sanitize_text_field($settings['custom_text'] ?? '');
 
         return $settings;
     }
@@ -71,11 +74,12 @@ class Admin_Settings
         $lc_wpmethods_links = $options['lc_wpmethods_links'] ?? [];
         ?>
         <div class="wrap">
-            <h1><?php esc_html_e('Live Chat Settings', 'lc-wpmethods'); ?></h1>
+            <h1><?php esc_html_e('Social Floating Icons', 'lc-wpmethods'); ?></h1>
 
             <div class="lc-tabs">
                 <button class="lc-tab-button active" data-tab="general"><?php esc_html_e('Icons & Links', 'lc-wpmethods'); ?></button>
                 <button class="lc-tab-button" data-tab="style"><?php esc_html_e('Widget Styles', 'lc-wpmethods'); ?></button>
+                <button class="lc-tab-button" data-tab="help"><?php esc_html_e('Help', 'lc-wpmethods'); ?></button>
             </div>
 
             <form method="post" action="options.php">
@@ -178,8 +182,48 @@ class Admin_Settings
                             <th scope="row"><?php esc_html_e('Pulse Animation Circle', 'lc-wpmethods'); ?></th>
                             <td><input type="text" name="lc_wpmethods_settings[pulse_animation_border_color]" value="<?php echo esc_attr($options['pulse_animation_border_color'] ?? '#128C7E'); ?>" class="color-field" /></td>
                         </tr>
+
+                        <tr valign="top">
+                            <th scope="row"><?php esc_html_e('Messege', 'lc-wpmethods'); ?></th>
+                            <td><input type="text" name="lc_wpmethods_settings[custom_text]" value="<?php echo esc_attr($options['custom_text'] ?? ''); ?>" placeholder="Ex: Hi, how are you?" /></td>
+                        </tr>
                     </table>
                 </div>
+
+
+                <div class="lc-tab-content" id="tab-help">
+                    <h2><?php esc_html_e('Chat Social Links Example', 'lc-wpmethods'); ?></h2>
+                    <ul>
+                        <li><strong>WhatsApp:</strong> https://wa.me/your-number (Ex: https://wa.me/1797150000)</li>
+                        <li><strong>Messenger:</strong> https://m.me/your-page</li>
+                        <li><strong>Telegram:</strong> https://t.me/your-username</li>
+                        <li><strong>Skype:</strong> skype:your-username?chat</li>
+                        <li><strong>Viber:</strong> viber://chat?number=your-number</li>
+                        <li><strong>Signal:</strong> https://signal.me/#p/your-number</li>
+                        <li><strong>Snapchat:</strong> https://www.snapchat.com/add/your-username</li>
+                        <li><strong>Instagram:</strong> https://instagram.com/your-username</li>
+                        <li><strong>Facebook:</strong> https://facebook.com/your-page</li>
+                        <li><strong>X (Twitter):</strong> https://x.com/your-username</li>
+                        <li><strong>LinkedIn:</strong> https://linkedin.com/in/your-username</li>
+                        <li><strong>Discord:</strong> https://discord.com/users/your-user-id</li>
+                        <li><strong>WeChat:</strong> weixin://dl/chat?your-wechat-id</li>
+
+                    </ul>
+
+                    <h2><?php esc_html_e('Font Awesome 6 Icon Class Examples', 'lc-wpmethods'); ?></h2>
+                    <ul>
+                        <li><code>fas fa-home</code></li>
+                        <li><code>fab fa-whatsapp</code></li>
+                        <li><code>fab fa-facebook-messenger</code></li>
+                        <li><code>fab fa-telegram</code></li>
+                    </ul>
+
+                    <p>
+                        <?php esc_html_e('Use any FontAwesome 6 class name for your icon. You can browse icons at:', 'lc-wpmethods'); ?>
+                        <a href="https://fontawesome.com/v6/search" target="_blank">https://fontawesome.com/icons</a>
+                    </p>
+                </div>
+
 
                 <?php submit_button(); ?>
             </form>

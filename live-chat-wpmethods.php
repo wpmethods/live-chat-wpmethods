@@ -1,7 +1,7 @@
 <?php
 /**
- * Plugin Name: Live Chat WPMethods
- * Description: Display live chat floating icons (WhatsApp, Messenger, Telegram) on your WordPress site.
+ * Plugin Name: Chat Social Icon – Floating Contact Widget
+ * Description: Display live chat social floating icons (WhatsApp, Messenger, Telegram) on your WordPress site.
  * Plugin URI: https://wpmethods.com
  * Author: WP Methods
  * Author URI: https://wpmethods.com
@@ -28,4 +28,13 @@ add_action('plugins_loaded', function() {
     } else {
         new LC_WPMethods\Front_End();
     }
+});
+
+
+//Allowed Custom Protocols
+add_filter('kses_allowed_protocols', function ($protocols) {
+    $protocols[] = 'skype';
+    $protocols[] = 'viber';
+    $protocols[] = 'weixin';
+    return $protocols;
 });

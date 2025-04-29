@@ -34,6 +34,8 @@ class Front_End {
         $toggle_color = $options['toggle_bg_color'] ? $options['toggle_bg_color'] : '#00DA62';
         $icon_color = $options['icon_color'] ? $options['icon_color'] : '#FFFFFF';
         $hover_color = $options['hover_color'] ?  $options['hover_color'] : '#128C7E';
+        $custom_text = $options['custom_text'] ?  $options['custom_text'] : '';
+        $custom_ver = '?text=';
         $pulse_animation_border_color = $options['pulse_animation_border_color'] ?  $options['pulse_animation_border_color'] : '#25D366';
 
         if (empty($lc_wpmethods_links) || !is_array($lc_wpmethods_links)) {
@@ -54,7 +56,7 @@ class Front_End {
                         continue;
                     }
                 ?>
-                    <a href="<?php echo esc_url($url); ?>" target="_blank" style="background: <?php echo esc_attr($bg_color); ?>;" class="lc-wpmethods-chat-btn <?php echo sanitize_html_class(strtolower($label)); ?>" title="<?php echo esc_attr($label); ?>">
+                    <a href="<?php echo esc_url($url); if (!empty($custom_text)) : echo esc_html('?text='.$custom_text); endif; ?>" target="_blank" style="background: <?php echo esc_attr($bg_color); ?>;" class="lc-wpmethods-chat-btn <?php echo sanitize_html_class(strtolower($label)); ?>" title="<?php echo esc_attr($label); ?>">
                         <i class="<?php echo esc_attr($icon_class); ?>" style="color: <?php echo esc_attr($color); ?>;"></i>
                     </a>
                 <?php endforeach; ?>
