@@ -28,7 +28,7 @@ class Front_End {
             'icon' => 'fab fa-whatsapp',
             'label' => 'WhatsApp',
             'color' => '#ffffff',
-            'bg_color' => 'linear-gradient(135deg, #25D366, #128C7E)',
+            'bg_color' => '#00DA62',
         ]];
 
         $toggle_color = $options['toggle_bg_color'] ? $options['toggle_bg_color'] : '#00DA62';
@@ -50,13 +50,13 @@ class Front_End {
                     $icon_class = !empty($link['icon']) ? $link['icon'] : 'fab fa-whatsapp';
                     $label = !empty($link['label']) ? $link['label'] : 'WhatsApp';
                     $color = !empty($link['color']) ? $link['color'] : '#ffffff';
-                    $bg_color = !empty($link['bg_color']) ? $link['bg_color'] : 'linear-gradient(135deg, #25D366, #128C7E)';
+                    $bg_color = !empty($link['bg_color']) ? $link['bg_color'] : '#00DA62';
 
                     if (empty($url) || empty($icon_class)) {
                         continue;
                     }
                 ?>
-                    <a href="<?php echo esc_url($url); if (!empty($custom_text)) : echo esc_html('?text='.$custom_text); endif; ?>" target="_blank" style="background: <?php echo esc_attr($bg_color); ?>;" class="lc-wpmethods-chat-btn <?php echo sanitize_html_class(strtolower($label)); ?>" title="<?php echo esc_attr($label); ?>">
+                    <a href="<?php echo esc_url($url); if (!empty($custom_text)) : echo esc_html('?text='.$custom_text); endif; ?>" target="_blank" style="background: linear-gradient(45deg, <?php echo esc_attr($bg_color);?> 0%, <?php echo esc_attr($bg_color);?> 50%, #0000 100%); ?>;" class="lc-wpmethods-chat-btn <?php echo sanitize_html_class(strtolower($label)); ?>" title="<?php echo esc_attr($label); ?>">
                         <i class="<?php echo esc_attr($icon_class); ?>" style="color: <?php echo esc_attr($color); ?>;"></i>
                     </a>
                 <?php endforeach; ?>

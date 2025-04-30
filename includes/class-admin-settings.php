@@ -197,6 +197,7 @@ class Admin_Settings
                         <li><strong>WhatsApp:</strong> https://wa.me/your-number (Ex: https://wa.me/1797150000)</li>
                         <li><strong>Messenger:</strong> https://m.me/your-page</li>
                         <li><strong>Telegram:</strong> https://t.me/your-username</li>
+                        <li><strong>Phone/Call:</strong> tel:your-phone-number</li>
                         <li><strong>Skype:</strong> skype:your-username?chat</li>
                         <li><strong>Viber:</strong> viber://chat?number=your-number</li>
                         <li><strong>Signal:</strong> https://signal.me/#p/your-number</li>
@@ -216,11 +217,46 @@ class Admin_Settings
                         <li><code>fab fa-whatsapp</code></li>
                         <li><code>fab fa-facebook-messenger</code></li>
                         <li><code>fab fa-telegram</code></li>
+                        <li><code>fab fa-skype</code></li>
+                        <li><code>fab fa-viber</code></li>
+                        <li><code>fab fa-weixin</code></li>
+                        <li><code>fab fa-instagram</code></li>
+                        <li><code>fab fa-twitter</code></li>
+                        <li><code>fab fa-linkedin</code></li>
+                        <li><code>fab fa-pinterest</code></li>
+                        <li><code>fab fa-snapchat</code></li>
+                        <li><code>fab fa-youtube</code></li>
+                        <li><code>fab fa-reddit</code></li>
+                        <li><code>fab fa-tiktok</code></li>
+                        <li><code>fab fa-discord</code></li>
+                        <li><code>fab fa-github</code></li>
+                        <li><code>fab fa-soundcloud</code></li>
+                        <li><code>fab fa-slack</code></li>
+                        <li><code>fab fa-yahoo</code></li>
+                        <li><code>fab fa-tumblr</code></li>
+                        <li><code>fab fa-flickr</code></li>
+                        <li><code>fab fa-vimeo</code></li>
+                        <li><code>fas fa-envelope</code></li>
+                        <li><code>fas fa-phone-alt</code></li>
+                        <li><code>fas fa-comments</code></li>
+                        <li><code>fas fa-video</code></li>
+                        <li><code>fas fa-camera</code></li>
+                        <li><code>fas fa-map-marker-alt</code></li>
+                        <li><code>fas fa-search</code></li>
+                        <li><code>fas fa-cogs</code></li>
+                        <li><code>fas fa-user-circle</code></li>
+                        <li><code>fas fa-phone-square-alt</code></li>
+
                     </ul>
 
                     <p>
                         <?php esc_html_e('Use any FontAwesome 6 class name for your icon. You can browse icons at:', 'lc-wpmethods'); ?>
                         <a href="https://fontawesome.com/v6/search" target="_blank">https://fontawesome.com/icons</a>
+                    </p>
+
+                    <p>
+                        Made with love by <a href="https://wpmethods.com" target="_blank">WP Methods</a><br>
+                        🎁If you like this plugin, consider supporting development: <a href="https://buymeacoffee.com/ajharrashed" target="_blank">Donate</a>
                     </p>
                 </div>
 
