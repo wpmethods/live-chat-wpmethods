@@ -1,4 +1,4 @@
-=== Chat Social Icon – Floating Contact Widget ===
+=== Social Floating Icon – Live Chat Widget ===
 Contributors: wpmethods, ajharrashed
 Tags: live chat, wordpress live chat, floating contact widget, live chat social icon, whatsapp live chat, messenger live chat, live chat icon, whatsapp, facebook, telegram live chat
 Requires at least: 5.9
@@ -11,7 +11,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Display live chat floating icons (WhatsApp, Messenger, Telegram) on your WordPress site.
 
 == Description ==
-Bring your website to life with interactive, floating social and chat icons that keep you connected with your audience — anytime, anywhere. This lightweight and customizable plugin allows you to add WhatsApp, Messenger, Telegram, Skype, and more as stylish floating icons on your site. Whether you're offering customer support or just want to stay in touch, this plugin makes it effortless for users to reach you in one click.
+Bring your website to life with interactive, floating social icon and chat icons that keep you connected with your audience — anytime, anywhere. This lightweight and customizable plugin allows you to add WhatsApp, Messenger, Telegram, Skype, and more as stylish floating icons on your site. Whether you're offering customer support or just want to stay in touch, this plugin makes it effortless for users to reach you in one click.
 
 = Features =
 ✅ Floating Chat Icon Widget
@@ -46,11 +46,6 @@ Fully translatable for global use.
 
 🧩 Lightweight and Fast
 No bloat – only the features you need to enhance user communication.
-
-
-Made with love by [WP Methods](https://wpmethods.com)
-
-🎁If you like this plugin, consider supporting development: [Donate](https://buymeacoffee.com/ajharrashed)
 
 
 

@@ -9,8 +9,8 @@
 }
 
 .lc-wpmethods-chat-toggle {
-    width: 45px;
-    height: 45px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -44,9 +44,8 @@
 }
 
 .lc-wpmethods-chat-btn {
-    margin-bottom: 12px;
-    width: 45px;
-    height: 45px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -61,8 +60,9 @@
 }
 
 .lc-wpmethods-chat-btn:hover {
-    transform: scale(1.1);
+    transform: scale(1.1); 
 }
+
 
 .lc-wpmethods-chat-btn i {
     pointer-events: none;
@@ -108,6 +108,38 @@
 .lc-wpmethods-chat-container:hover .lc-wpmethods-pulse {
     animation: none;
 }
+
+.sfiw-icons{
+    display: flex;
+    align-items: center;
+    justify-content: end;
+}
+
+.label-sfiw {
+    font-size: 14px;
+    margin-right: -4%;
+    background: #02ed78;
+    color: white;
+    padding: 5px 15px;
+    padding-right: 20px;
+    border-radius: 20px 0px 0px 20px;
+    font-weight: bold;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2), 0 2px 4px 0 rgba(0, 0, 0, 0.19);
+    z-index: -1;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(30px);
+    transition: all 0.3s ease, visibility 0.3s ease;
+}
+
+
+.sfiw-icons:hover .label-sfiw{
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0px);
+}
+
+
 
 @media (max-width: 480px) {
     .lc-wpmethods-chat-toggle {

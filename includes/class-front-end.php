@@ -14,8 +14,8 @@ class Front_End {
 
     public function enqueue_assets() {
         $this->maybe_enqueue_fontawesome();
-        wp_enqueue_style('lc-wpmethods-css', LC_WPMETHODS_URL . 'assets/css/front-end.css', [], '1.0');
-        wp_enqueue_script('lc-wpmethods-js', LC_WPMETHODS_URL . 'assets/js/front-end.js', ['jquery'], '1.0', true);
+        wp_enqueue_style('lc-wpmethods-css', LC_WPMETHODS_URL . 'assets/css/front-end.css', [], VERSION_SFIW);
+        wp_enqueue_script('lc-wpmethods-js', LC_WPMETHODS_URL . 'assets/js/front-end.js', ['jquery'], VERSION_SFIW, true);
     }
 
     public function render_chat_buttons()
@@ -56,9 +56,13 @@ class Front_End {
                         continue;
                     }
                 ?>
-                    <a href="<?php echo esc_url($url); if (!empty($custom_text)) : echo esc_html('?text='.$custom_text); endif; ?>" target="_blank" style="background: linear-gradient(45deg, <?php echo esc_attr($bg_color);?> 0%, <?php echo esc_attr($bg_color);?> 50%, #0000 100%); ?>;" class="lc-wpmethods-chat-btn <?php echo sanitize_html_class(strtolower($label)); ?>" title="<?php echo esc_attr($label); ?>">
-                        <i class="<?php echo esc_attr($icon_class); ?>" style="color: <?php echo esc_attr($color); ?>;"></i>
-                    </a>
+                    <div class="sfiw-icons">
+                        <p class="label-sfiw"><?php echo esc_attr($label); ?></p>
+                        <a href="<?php echo esc_url($url); if (!empty($custom_text)) : echo esc_html('?text='.$custom_text); endif; ?>" target="_blank" style=" background: linear-gradient(45deg, <?php echo esc_attr($bg_color);?> 50%, #00000075 100%); ?>;" class="lc-wpmethods-chat-btn <?php echo sanitize_html_class(strtolower($label)); ?>">
+                            <i class="<?php echo esc_attr($icon_class); ?>" style="color: <?php echo esc_attr($color); ?>;"></i>
+                        </a>
+                        
+                    </div>
                 <?php endforeach; ?>
             </div>
 
@@ -76,7 +80,7 @@ class Front_End {
                 }
 
 
-                @keyframes lc-wpmethods-pulse {
+               @keyframes lc-wpmethods-pulse {
                     0% {
                         box-shadow: 0 0 0 0 <?php echo esc_attr($pulse_animation_border_color); ?>;
                         transform: scale(1);

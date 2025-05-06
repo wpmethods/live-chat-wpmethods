@@ -1,7 +1,7 @@
 <?php
 /**
- * Plugin Name: Chat Social Icon – Floating Contact Widget
- * Description: Display live chat social floating icons (WhatsApp, Messenger, Telegram) on your WordPress site.
+ * Plugin Name: Social Floating Icon – Live Chat Widget
+ * Description: Display live chat social floating icons or widget (WhatsApp, Messenger, Telegram) on your WordPress site.
  * Plugin URI: https://wpmethods.com
  * Author: WP Methods
  * Author URI: https://wpmethods.com
@@ -18,14 +18,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 define('LC_WPMETHODS_PATH', plugin_dir_path(__FILE__));
 define('LC_WPMETHODS_URL', plugin_dir_url(__FILE__));
 
+define('VERSION_SFIW', '1.0.0');
+
 // Autoload Classes
 require_once LC_WPMETHODS_PATH . 'vendor/autoload.php';
 
 // Initialize
 add_action('plugins_loaded', function() {
     if (is_admin()) {
-        new LC_WPMethods\Admin_Settings();
-        //new LC_WPMethods\License_Lcw();
+        new LC_WPMethods\Admin_Settings_Lcw();
+        new LC_WPMethods\License_Lcw();
 
     } else {
         new LC_WPMethods\Front_End();

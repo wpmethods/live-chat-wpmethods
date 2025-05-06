@@ -5,7 +5,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-class Admin_Settings
+class Admin_Settings_Lcw
 {
     public function __construct()
     {
@@ -32,8 +32,8 @@ class Admin_Settings
             return;
         }
         wp_enqueue_style('wp-color-picker');
-        wp_enqueue_style('lc-wpmethods-admin', LC_WPMETHODS_URL . 'assets/css/admin.css', [], '1.0');
-        wp_enqueue_script('lc-wpmethods-admin', LC_WPMETHODS_URL . 'assets/js/admin.js', ['jquery', 'wp-color-picker'], '1.0', true);
+        wp_enqueue_style('lc-wpmethods-admin', LC_WPMETHODS_URL . 'assets/css/admin.css', [], VERSION_SFIW);
+        wp_enqueue_script('lc-wpmethods-admin', LC_WPMETHODS_URL . 'assets/js/admin.js', ['jquery', 'wp-color-picker'], VERSION_SFIW, true);
         
         // Enqueue FontAwesome for icons
         wp_enqueue_style('fontawesome', LC_WPMETHODS_URL . 'assets/css/all.min.css', [], '6.7.2');
@@ -255,8 +255,7 @@ class Admin_Settings
                     </p>
 
                     <p>
-                        Made with love by <a href="https://wpmethods.com" target="_blank">WP Methods</a><br>
-                        🎁If you like this plugin, consider supporting development: <a href="https://buymeacoffee.com/ajharrashed" target="_blank">Donate</a>
+                        You can buy the license to get full access of this plugin <a href="https://wpmethods.com/social-floating-icon" target="_blank">Click here</a>
                     </p>
                 </div>
 
