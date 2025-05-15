@@ -38,12 +38,24 @@ class Front_End {
         $custom_ver = '?text=';
         $pulse_animation_border_color = $options['pulse_animation_border_color'] ?  $options['pulse_animation_border_color'] : '#25D366';
 
+        // Position settings
+        $position = $options['position'] ?? 'right'; // 'left' or 'right'
+        $bottom_offset = $options['bottom_offset'] ?? '20px';
+        $left_offset = $options['left_offset'] ?? '20px';
+        $right_offset = $options['right_offset'] ?? '20px';
+
+        // Decide position style
+        $side_offset_style = $position === 'left'
+            ? "left: {$left_offset}; right: auto;"
+            : "right: {$right_offset}; left: auto;";
+        
+        
         if (empty($lc_wpmethods_links) || !is_array($lc_wpmethods_links)) {
             return; // Nothing to render
         }
         ?>
 
-        <div class="lc-wpmethods-chat-container" id="lcWpmethodsChatContainer">
+        <div class="lc-wpmethods-chat-container" id="lcWpmethodsChatContainer"  style="bottom: <?php echo esc_attr($bottom_offset); ?>; <?php echo esc_attr($side_offset_style); ?> z-index: 9999;">
             <div class="lc-wpmethods-chat-options" id="chatOptions">
                 <?php foreach ($lc_wpmethods_links as $link) : 
                     $url = !empty($link['url']) ? $link['url'] : 'https://wa.me/your-whatsapp-number';
@@ -71,12 +83,25 @@ class Front_End {
             </div>
 
             <style>
+                .lc-wpmethods-chat-container {
+                    align-items: <?php echo $position === 'left' ? 'flex-start' : 'flex-end'; ?>;
+                }
                 .lc-wpmethods-chat-toggle{
                     color: <?php echo esc_attr($icon_color); ?>;
                     background: <?php echo esc_attr($toggle_color); ?>;
                 }
                 .lc-wpmethods-chat-toggle:hover{
                     background: <?php echo esc_attr($hover_color); ?>;
+                }
+
+                .sfiw-icons{
+                    flex-direction: <?php echo $position === 'left' ? 'row-reverse' : 'row'; ?>;
+                    justify-content: <?php echo $position === 'left' ? 'start' : 'end'; ?>;
+                }
+
+                .label-sfiw {
+                    border-radius: <?php echo $position === 'left' ? '0px 20px 20px 0px' : '20px 0px 0px 20px'; ?>;
+                    margin-right: <?php echo $position === 'left' ? '-25%' : '-4%'; ?>;
                 }
 
 

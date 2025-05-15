@@ -5,8 +5,8 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-class Admin_Settings_Lcw
-{
+class Admin_Settings_Lcw{
+    private $option_key      = 'wpmlc_license_key';
     public function __construct()
     {
         add_action('admin_menu', [$this, 'add_menu_page']);
@@ -72,6 +72,10 @@ class Admin_Settings_Lcw
     {
         $options = get_option('lc_wpmethods_settings', []);
         $lc_wpmethods_links = $options['lc_wpmethods_links'] ?? [];
+
+        $license_status = get_option('wpmlc_license_status', 'inactive');
+        $limit_items = ($license_status !== 'active');
+
         ?>
         <div class="wrap">
             <h1><?php esc_html_e('Social Floating Icons', 'lc-wpmethods'); ?></h1>
@@ -89,7 +93,15 @@ class Admin_Settings_Lcw
                 <div class="lc-tab-content active" id="tab-general">
                     <div id="cl-wpmethods-repeater-fields">
                         <?php if (!empty($lc_wpmethods_links)) : ?>
-                            <?php foreach ($lc_wpmethods_links as $index => $link) : ?>
+                            <?php 
+                            $displayed_count = 0;
+                            foreach ($lc_wpmethods_links as $index => $link) : 
+                                if ($limit_items && $displayed_count >= 3) {
+                                    break;
+                                }
+                                $displayed_count++;
+                                
+                                ?>
                                 <div class="cl-wpmethods-field-group">
                                     <div class="cl-wpmethods-preview-icon">
                                         <i class="<?php echo esc_attr($link['icon'] ?? 'fab fa-whatsapp'); ?>"></i>
@@ -187,6 +199,42 @@ class Admin_Settings_Lcw
                             <th scope="row"><?php esc_html_e('Messege', 'lc-wpmethods'); ?></th>
                             <td><input type="text" name="lc_wpmethods_settings[custom_text]" value="<?php echo esc_attr($options['custom_text'] ?? ''); ?>" placeholder="Ex: Hi, how are you?" /></td>
                         </tr>
+
+
+                        <tr valign="top">
+                            <th scope="row"><?php esc_html_e('Button Position', 'lc-wpmethods'); ?></th>
+                            <td>
+                                <select name="lc_wpmethods_settings[position]">
+                                    <option value="right" <?php selected($options['position'] ?? '', 'right'); ?>><?php esc_html_e('Right', 'lc-wpmethods'); ?></option>
+                                    <option value="left" <?php selected($options['position'] ?? '', 'left'); ?>><?php esc_html_e('Left', 'lc-wpmethods'); ?></option>
+                                </select>
+                            </td>
+                        </tr>
+
+                        <tr valign="top">
+                            <th scope="row"><?php esc_html_e('Bottom Offset', 'lc-wpmethods'); ?></th>
+                            <td>
+                                <input type="text" name="lc_wpmethods_settings[bottom_offset]" value="<?php echo esc_attr($options['bottom_offset'] ?? '20px'); ?>" placeholder="Ex: 20px or 5%" />
+                                <p class="description"><?php esc_html_e('Distance from the bottom of the screen.', 'lc-wpmethods'); ?></p>
+                            </td>
+                        </tr>
+
+                        <tr valign="top">
+                            <th scope="row"><?php esc_html_e('Left Offset', 'lc-wpmethods'); ?></th>
+                            <td>
+                                <input type="text" name="lc_wpmethods_settings[left_offset]" value="<?php echo esc_attr($options['left_offset'] ?? '20px'); ?>" placeholder="Ex: 20px" />
+                                <p class="description"><?php esc_html_e('Distance from the left if position is set to "Left".', 'lc-wpmethods'); ?></p>
+                            </td>
+                        </tr>
+
+                        <tr valign="top">
+                            <th scope="row"><?php esc_html_e('Right Offset', 'lc-wpmethods'); ?></th>
+                            <td>
+                                <input type="text" name="lc_wpmethods_settings[right_offset]" value="<?php echo esc_attr($options['right_offset'] ?? '20px'); ?>" placeholder="Ex: 20px" />
+                                <p class="description"><?php esc_html_e('Distance from the right if position is set to "Right".', 'lc-wpmethods'); ?></p>
+                            </td>
+                        </tr>
+
                     </table>
                 </div>
 
@@ -267,27 +315,29 @@ class Admin_Settings_Lcw
             <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 
             <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const addButton = document.getElementById("cl-wpmethods-add-field");
+                const container = document.getElementById("cl-wpmethods-repeater-fields");
+                const limit = <?php echo $limit_items ? 'true' : 'false'; ?>;
                 let counter = <?php echo count($lc_wpmethods_links); ?>;
 
-                function initializeColorPickers() {
-                    jQuery('.color-picker').wpColorPicker();
-                }
+                // Add Field
+                addButton?.addEventListener("click", function () {
+                    const count = container.querySelectorAll(".cl-wpmethods-field-group").length;
 
-                function updateIconPreview(input) {
-                    const iconClass = input.value.trim() || 'fab fa-whatsapp';
-                    const preview = input.closest('.cl-wpmethods-field-group').querySelector('.cl-wpmethods-preview-icon i');
-                    preview.className = iconClass;
-                }
+                    if (limit && count >= 3) {
+                        alert("The free version allows only up to 3 icons. Please activate your license for unlimited icons.");
+                        return;
+                    }
 
-                document.getElementById('cl-wpmethods-add-field').addEventListener('click', function() {
-                    const container = document.getElementById('cl-wpmethods-repeater-fields');
-
-                    const fieldGroup = document.createElement('div');
-                    fieldGroup.className = 'cl-wpmethods-field-group';
+                    const fieldGroup = document.createElement("div");
+                    fieldGroup.className = "cl-wpmethods-field-group";
+                    fieldGroup.style.marginBottom = "15px";
                     fieldGroup.innerHTML = `
-                        <div class="cl-wpmethods-preview-icon">
+                        <div class="cl-wpmethods-preview-icon" style="margin-bottom: 8px;">
                             <i class="fab fa-whatsapp"></i>
                         </div>
+
                         <div class="flex-cl-wpmethods">
                             <label for="cl-url-${counter}">Enter URL</label>
                             <input type="text" id="cl-url-${counter}" name="lc_wpmethods_settings[lc_wpmethods_links][${counter}][url]" placeholder="URL (Ex: https://wa.me/88017900000)" />
@@ -295,7 +345,7 @@ class Admin_Settings_Lcw
 
                         <div class="flex-cl-wpmethods">
                             <label for="cl-class-${counter}">Enter Icon Class</label>
-                            <input type="text" id="cl-class-${counter}" name="lc_wpmethods_settings[lc_wpmethods_links][${counter}][icon]" class="icon-input" placeholder="Enter Icon Class" />
+                            <input type="text" id="cl-class-${counter}" name="lc_wpmethods_settings[lc_wpmethods_links][${counter}][icon]" class="icon-input" placeholder="Enter Icon Class (e.g. fab fa-facebook)" />
                         </div>
 
                         <div class="flex-cl-wpmethods">
@@ -312,38 +362,48 @@ class Admin_Settings_Lcw
                             <label for="cl-bgcolor-${counter}">Background Color</label>
                             <input type="text" id="cl-bgcolor-${counter}" name="lc_wpmethods_settings[lc_wpmethods_links][${counter}][bg_color]" class="color-picker" placeholder="Pick Background Color" />
                         </div>
-                        <button type="button" class="cl-wpmethods-remove-field">Remove</button>
+
+                        <button type="button" class="cl-wpmethods-remove-field button" style="margin-top: 10px;"><?php esc_html_e('Remove', 'lc-wpmethods'); ?></button>
                     `;
 
                     container.appendChild(fieldGroup);
-
                     initializeColorPickers();
                     counter++;
                 });
 
                 // Remove field
-                document.addEventListener('click', function(e) {
-                    if (e.target && e.target.classList.contains('cl-wpmethods-remove-field')) {
-                        e.target.parentElement.remove();
+                container.addEventListener("click", function (e) {
+                    if (e.target.classList.contains("cl-wpmethods-remove-field")) {
+                        e.target.closest(".cl-wpmethods-field-group").remove();
                     }
                 });
 
-                // Update icon live preview
-                document.addEventListener('input', function(e) {
-                    if (e.target && e.target.classList.contains('icon-input')) {
-                        updateIconPreview(e.target);
+                // Live preview for icon
+                document.addEventListener("input", function (e) {
+                    if (e.target.classList.contains("icon-input")) {
+                        const iconClass = e.target.value.trim() || 'fab fa-whatsapp';
+                        const preview = e.target.closest('.cl-wpmethods-field-group').querySelector('.cl-wpmethods-preview-icon i');
+                        preview.className = iconClass;
                     }
                 });
 
-                new Sortable(document.getElementById('cl-wpmethods-repeater-fields'), {
+                // Initialize Sortable
+                new Sortable(container, {
                     animation: 150,
                     ghostClass: 'sortable-ghost'
                 });
 
-                jQuery(document).ready(function($) {
+                // Initialize Color Pickers (WordPress)
+                function initializeColorPickers() {
+                    jQuery('.color-picker').wpColorPicker();
+                }
+
+                jQuery(document).ready(function () {
                     initializeColorPickers();
                 });
+            });
             </script>
+
         </div>
         <?php
     }
