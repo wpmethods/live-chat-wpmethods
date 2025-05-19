@@ -47,6 +47,19 @@ class Admin_Settings_Lcw{
         ]);
     }
 
+    private function sanitize_select_position($input) {
+        // Sanitize the input
+        $input = sanitize_text_field($input ?? '');
+        
+        // Define valid options for the select field
+        $valid_options = ['left', 'right'];
+        
+        // Return the input if valid, otherwise return a default (e.g., '')
+        return in_array($input, $valid_options, true) ? $input : '';
+    }
+    
+   
+
     public function sanitize_settings($settings)
     {
         if (isset($settings['lc_wpmethods_links']) && is_array($settings['lc_wpmethods_links'])) {
@@ -62,8 +75,14 @@ class Admin_Settings_Lcw{
         // Sanitize style fields
         $settings['toggle_bg_color'] = sanitize_hex_color($settings['toggle_bg_color'] ?? '');
         $settings['icon_color'] = sanitize_hex_color($settings['icon_color'] ?? '');
+        $settings['icon_size'] = sanitize_text_field($settings['icon_size'] ?? '');
+        $settings['height_width'] = sanitize_text_field($settings['height_width'] ?? '');
         $settings['hover_color'] = sanitize_hex_color($settings['hover_color'] ?? '');
         $settings['custom_text'] = sanitize_text_field($settings['custom_text'] ?? '');
+        $settings['position'] = $this->sanitize_select_position($settings['position'] ?? '');
+        $settings['right_offset'] = sanitize_text_field($settings['right_offset'] ?? '');
+        $settings['left_offset'] = sanitize_text_field($settings['left_offset'] ?? '');
+        $settings['bottom_offset'] = sanitize_text_field($settings['bottom_offset'] ?? '');
 
         return $settings;
     }
@@ -178,12 +197,20 @@ class Admin_Settings_Lcw{
                 <div class="lc-tab-content" id="tab-style">
                     <table class="form-table">
                         <tr valign="top">
-                            <th scope="row"><?php esc_html_e('Main Button Background', 'lc-wpmethods'); ?></th>
+                            <th scope="row"><?php esc_html_e('Button Background', 'lc-wpmethods'); ?></th>
                             <td><input type="text" name="lc_wpmethods_settings[toggle_bg_color]" value="<?php echo esc_attr($options['toggle_bg_color'] ?? '#00DA62'); ?>" class="color-field" /></td>
                         </tr>
                         <tr valign="top">
                             <th scope="row"><?php esc_html_e('Icon Color', 'lc-wpmethods'); ?></th>
                             <td><input type="text" name="lc_wpmethods_settings[icon_color]" value="<?php echo esc_attr($options['icon_color'] ?? '#FFFFFF'); ?>" class="color-field" /></td>
+                        </tr>
+                        <tr valign="top">
+                            <th scope="row"><?php esc_html_e('Icon Size (px)', 'lc-wpmethods'); ?></th>
+                            <td><input type="number" name="lc_wpmethods_settings[icon_size]" value="<?php echo esc_attr($options['icon_size'] ?? '25'); ?>" /></td>
+                        </tr>
+                        <tr valign="top">
+                            <th scope="row"><?php esc_html_e('Button Size (px)', 'lc-wpmethods'); ?></th>
+                            <td><input type="number" name="lc_wpmethods_settings[height_width]" value="<?php echo esc_attr($options['height_width'] ?? '56'); ?>" /></td>
                         </tr>
                         <tr valign="top">
                             <th scope="row"><?php esc_html_e('Hover Color', 'lc-wpmethods'); ?></th>

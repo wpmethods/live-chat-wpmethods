@@ -63,44 +63,6 @@
     transform: scale(1.1); 
 }
 
-
-.lc-wpmethods-chat-btn i {
-    pointer-events: none;
-    font-size: 25px;
-}
-
-.lc-wpmethods-chat-btn .lc-wpmethods-tooltip {
-    position: absolute;
-    right: 110%;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: #333;
-    color: white;
-    padding: 6px 10px;
-    font-size: 12px;
-    border-radius: 4px;
-    white-space: nowrap;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.2s ease;
-}
-
-.lc-wpmethods-chat-btn:hover .lc-wpmethods-tooltip {
-    opacity: 1;
-}
-
-.lc-wpmethods-chat-btn.whatsapp {
-    background: linear-gradient(135deg, #25D366, #128C7E);
-}
-
-.lc-wpmethods-chat-btn.messenger {
-    background: linear-gradient(135deg, #00B2FF, #006AFF);
-}
-
-.lc-wpmethods-chat-btn.telegram {
-    background: linear-gradient(135deg, #0088cc, #005f8e);
-}
-
 .lc-wpmethods-pulse {
     animation: lc-wpmethods-pulse 2s infinite;
 }
@@ -109,32 +71,6 @@
     animation: none;
 }
 
-.sfiw-icons{
-    display: flex;
-    align-items: center;
-}
-
-.label-sfiw {
-    font-size: 14px;
-    background: #02ed78;
-    color: white;
-    padding: 5px 15px;
-    padding-right: 20px;
-    font-weight: bold;
-    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2), 0 2px 4px 0 rgba(0, 0, 0, 0.19);
-    z-index: -1;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateX(30px);
-    transition: all 0.3s ease, visibility 0.3s ease;
-}
-
-
-.sfiw-icons:hover .label-sfiw{
-    opacity: 1;
-    visibility: visible;
-    transform: translateX(0px);
-}
 
 
 

@@ -33,6 +33,8 @@ class Front_End {
 
         $toggle_color = $options['toggle_bg_color'] ? $options['toggle_bg_color'] : '#00DA62';
         $icon_color = $options['icon_color'] ? $options['icon_color'] : '#FFFFFF';
+        $icon_size = $options['icon_size'] ? $options['icon_size'] : '25';
+        $height_width = $options['height_width'] ? $options['height_width'] : '50';
         $hover_color = $options['hover_color'] ?  $options['hover_color'] : '#128C7E';
         $custom_text = $options['custom_text'] ?  $options['custom_text'] : '';
         $custom_ver = '?text=';
@@ -69,8 +71,8 @@ class Front_End {
                     }
                 ?>
                     <div class="sfiw-icons">
-                        <p class="label-sfiw"><?php echo esc_attr($label); ?></p>
-                        <a href="<?php echo esc_url($url); if (!empty($custom_text)) : echo esc_html('?text='.$custom_text); endif; ?>" target="_blank" style=" background: linear-gradient(45deg, <?php echo esc_attr($bg_color);?> 50%, #00000075 100%); ?>;" class="lc-wpmethods-chat-btn <?php echo sanitize_html_class(strtolower($label)); ?>">
+                        <p class="label-sfiw" style="background: <?php echo esc_attr($bg_color); ?>"><?php echo esc_attr($label); ?></p>
+                        <a href="<?php echo esc_url($url); if (!empty($custom_text)) : echo esc_html('?text='.$custom_text); endif; ?>" target="_blank" style=" background: linear-gradient(45deg, <?php echo esc_attr($bg_color);?> 50%, #8b8b8b 100%); ?>;" class="lc-wpmethods-chat-btn <?php echo sanitize_html_class(strtolower($label)); ?>">
                             <i class="<?php echo esc_attr($icon_class); ?>" style="color: <?php echo esc_attr($color); ?>;"></i>
                         </a>
                         
@@ -83,6 +85,10 @@ class Front_End {
             </div>
 
             <style>
+                .lc-wpmethods-chat-toggle, .lc-wpmethods-chat-btn {
+                    height: <?php echo esc_attr($height_width); ?>px;
+                    width: <?php echo esc_attr($height_width); ?>px;
+                }
                 .lc-wpmethods-chat-container {
                     align-items: <?php echo $position === 'left' ? 'flex-start' : 'flex-end'; ?>;
                 }
@@ -94,14 +100,59 @@ class Front_End {
                     background: <?php echo esc_attr($hover_color); ?>;
                 }
 
-                .sfiw-icons{
+                .lc-wpmethods-chat-btn i {
+                    pointer-events: none;
+                    font-size: <?php echo esc_attr($icon_size); ?>px;
+                }
+
+                .sfiw-icons {
+                    display: flex;
+                    align-items: center;
                     flex-direction: <?php echo $position === 'left' ? 'row-reverse' : 'row'; ?>;
-                    justify-content: <?php echo $position === 'left' ? 'start' : 'end'; ?>;
+                    justify-content: flex-start;
+                    margin-bottom: 8px;
+                    position: relative; /* Required for absolute label */
                 }
 
                 .label-sfiw {
+                    font-size: 15px;
+                    font-weight: bold;
+                    color: white;
+                    padding: 8px 15px;
                     border-radius: <?php echo $position === 'left' ? '0px 20px 20px 0px' : '20px 0px 0px 20px'; ?>;
-                    margin-right: <?php echo $position === 'left' ? '-25%' : '-4%'; ?>;
+                    white-space: nowrap;
+                    opacity: 0;
+                    visibility: hidden;
+                    transition: all 0.3s ease;
+                    position: absolute;
+                    top: 50%;
+                    transform: translateY(-90%) <?php echo $position === 'left' ? 'translateX(-10px)' : 'translateX(10px)'; ?>;
+                    <?php if ($position === 'left'): ?>
+                        left: 65%;
+                        margin-left: 8px;
+                        padding-left: 25px;
+                    <?php else: ?>
+                        right: 65%;
+                        margin-right: 8px;
+                        padding-right: 25px;
+                    <?php endif; ?>
+                }
+
+                .sfiw-icons:hover .label-sfiw {
+                    opacity: 1;
+                    visibility: visible;
+                    transform: translateY(-90%) translateX(0);
+                }
+
+                .sfiw-icon {
+                    width: 50px;
+                    height: 50px;
+                    border-radius: 50%;
+                    background: #02ed78;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
                 }
 
 
