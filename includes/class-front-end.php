@@ -193,101 +193,118 @@ class Front_End {
 
 
 
-    private function lc_wpmethods_get_product_message() {
-        if (function_exists('is_woocommerce') && is_singular('product')) {
-            global $product;
-    
-            if ($product && is_a($product, 'WC_Product')) {
-                $title = $product->get_name();
-                $currency_symbol = html_entity_decode(get_woocommerce_currency_symbol(), ENT_HTML5);
-                $currency_code = get_woocommerce_currency();
-    
-                // Get short description
-                $short_description = apply_filters('woocommerce_short_description', $product->get_short_description());
-                $plain_description = wp_strip_all_tags($short_description);
-    
-                $message = "I want to buy this product and product details below:\n";
-                $message .= "Product: {$title}\n";
-    
-                // Handle variable product
-                $selected_text = '';
-                if ($product->is_type('variable')) {
-                    $variations = $product->get_available_variations();
-                    if (!empty($variations)) {
-                        $message .= "Variations:\n";
-                        foreach ($variations as $variation) {
-                            $variation_product = wc_get_product($variation['variation_id']);
-                            $price = $variation_product->get_price();
-                            $attributes = $variation['attributes'];
-                            $attribute_string = '';
-    
-                            foreach ($attributes as $key => $value) {
-                                if (!empty($value)) {
-                                    $attribute_name = wc_attribute_label(str_replace('attribute_', '', $key), $product);
-                                    $attribute_string .= "{$attribute_name}: {$value}";
-                                }
+private function lc_wpmethods_get_product_message() {
+    if (function_exists('is_woocommerce') && is_singular('product')) {
+        global $product;
+
+        if ($product && is_a($product, 'WC_Product')) {
+            $title = $product->get_name();
+            $currency_symbol = html_entity_decode(get_woocommerce_currency_symbol(), ENT_HTML5);
+            $currency_code = get_woocommerce_currency();
+
+            $message = "I want to buy this product and product details below:\n";
+            $message .= "Product: {$title}\n";
+
+            // Handle variable product
+            $selected_text = '';
+            $variations_text = '';
+            if ($product->is_type('variable')) {
+                $variations = $product->get_available_variations();
+                if (!empty($variations)) {
+                    $is_selected = false;
+                 
+
+                    foreach ($variations as $variation) {
+                        $variation_product = wc_get_product($variation['variation_id']);
+                        $price = number_format((float)$variation_product->get_price(), 2, '.', '');
+                        $attributes = $variation['attributes'];
+                        $attribute_string = '';
+
+                        foreach ($attributes as $key => $value) {
+                            if (!empty($value)) {
+                                $attribute_name = wc_attribute_label(str_replace('attribute_', '', $key), $product);
+                                $attribute_string .= "{$attribute_name}: {$value} ";
                             }
-    
-                            $line = "- {$attribute_string} - {$currency_symbol}{$price} {$currency_code}\n";
-                            $message .= $line;
-    
-                            // Detect selected variation from $_GET
+                        }
+
+                        // Add to variations list with consistent formatting
+                        $variations_text .= "- {$attribute_string}- {$currency_symbol}{$price} {$currency_code}\n";
+
+                        // Detect selected variation from $_GET
+                        $is_selected_var = true;
+                        foreach ($attributes as $key => $value) {
+                            if (!isset($_GET[$key]) || strtolower($_GET[$key]) !== strtolower($value)) {
+                                $is_selected_var = false;
+                                break;
+                            }
+                        }
+
+                        if ($is_selected_var) {
                             $is_selected = true;
-                            foreach ($attributes as $key => $value) {
-                                if (!isset($_GET[$key]) || strtolower($_GET[$key]) !== strtolower($value)) {
-                                    $is_selected = false;
-                                    break;
-                                }
+                            $regular_price = number_format((float)$variation_product->get_regular_price(), 2, '.', '');
+                            $sale_price = $variation_product->get_sale_price();
+                            if ($sale_price && $sale_price !== $regular_price) {
+                                $sale_price = number_format((float)$sale_price, 2, '.', '');
+                                $selected_text = "Selected Variation: {$attribute_string}- {$currency_symbol}{$regular_price}\n";
+                                $selected_text .= "Original price was: {$currency_symbol}{$regular_price}\n";
+                                $selected_text .= "*The discounted price is: {$currency_symbol}{$sale_price}.*\n";
+                                $selected_text .= $plain_description;
+                            } else {
+                                $selected_text = "Selected Variation: {$attribute_string}- {$currency_symbol}{$regular_price} {$currency_code}\n";
+                                $selected_text .= $plain_description;
                             }
-    
-                            if ($is_selected) {
-                                $selected_text = "Selected: {$attribute_string} - {$currency_symbol}{$price} {$currency_code}\n";
-                            }
-                        }
-    
-                        if (!empty($selected_text)) {
-                            $message .= "\n" . $selected_text;
                         }
                     }
+
+                    // Include variations list only if no variation is selected
+                    if (!$is_selected) {
+                        $message .= "\nVariations:\n" . $variations_text;
+                    } else {
+                        $message .= "\n" . $selected_text;
+                    }
+                }
+            } else {
+                // Handle simple product price
+                $regular_price = number_format((float)$product->get_regular_price(), 2, '.', '');
+                $sale_price = $product->get_sale_price();
+                if ($sale_price && $sale_price !== $regular_price) {
+                    $sale_price = number_format((float)$sale_price, 2, '.', '');
+                    $message .= "Original price was: {$currency_symbol}{$regular_price}\n";
+                    $message .= "*The discounted price is: {$currency_symbol}{$sale_price}.*";
                 } else {
-                    $price = $product->get_price();
-                    $message .= "Price: {$currency_symbol}{$price} {$currency_code}\n";
+                    $message .= "*Price: {$currency_symbol}{$regular_price} {$currency_code}*";
                 }
-    
-                // Description
-                if (!empty($plain_description)) {
-                    $message .= "Description: {$plain_description}\n";
-                }
-    
-                // Non-variation attributes
-                $attributes = $product->get_attributes();
-                $options_output = '';
-                if (!empty($attributes)) {
-                    foreach ($attributes as $attribute) {
-                        if ($attribute->get_visible() && !$attribute->get_variation()) {
-                            $name = wc_attribute_label($attribute->get_name());
-                            $options = $attribute->get_options();
-                            $option_values = array();
-                            foreach ($options as $option) {
-                                $option_values[] = wc_attribute_label($option);
-                            }
-                            if (!empty($option_values)) {
-                                $options_output .= "- {$name}: " . implode(', ', $option_values) . "\n";
-                            }
+            }
+
+            // Non-variation attributes
+            $attributes = $product->get_attributes();
+            $options_output = '';
+            if (!empty($attributes)) {
+                foreach ($attributes as $attribute) {
+                    if ($attribute->get_visible() && !$attribute->get_variation()) {
+                        $name = wc_attribute_label($attribute->get_name());
+                        $options = $attribute->get_options();
+                        $option_values = array();
+                        foreach ($options as $option) {
+                            $option_values[] = wc_attribute_label($option);
+                        }
+                        if (!empty($option_values)) {
+                            $options_output .= "- {$name}: " . implode(', ', $option_values) . "\n";
                         }
                     }
-    
-                    if (!empty($options_output)) {
-                        $message .= "Options:\n" . $options_output;
-                    }
                 }
-    
-                return trim($message);
+
+                if (!empty($options_output)) {
+                    $message .= "\nOptions:\n" . $options_output;
+                }
             }
+
+            return trim($message);
         }
-    
-        return '';
     }
+
+    return '';
+}
 
 
     public function jquery_custom_lc_wpethods() {
@@ -295,43 +312,64 @@ class Front_End {
             ?>
             <script>
     
-            jQuery(document).ready(function($) {
-                $('.lc-wpmethods-chat-btn').on('click', function(e) {
-                    e.preventDefault();
-    
-                    let baseUrl = $(this).data('url');
-                    let baseMessage = $(this).data('base-message');
-    
-                    let selectedVariation = '';
-                    let price = $('.woocommerce-variation-price .price').text().trim();
-    
-                    // Loop through selected attributes
-                    $('.variations select').each(function() {
-                        let label = $(this).closest('tr').find('label').text().trim();
-                        let value = $(this).val();
-                        if (value) {
-                            selectedVariation += `${label}: ${value} `;
-                        }
-                    });
-    
-                    if (selectedVariation) {
-                        baseMessage += `\nSelected: ${selectedVariation}`;
-                        if (price) {
-                            baseMessage += `- ${price}`;
-                        }
-                    }
-    
-                    // Encode and append message to URL
-                    const encodedMessage = encodeURIComponent(baseMessage.trim());
-    
-                    // Check if URL already has query (e.g., `?text=`), otherwise append it
-                    let finalUrl = baseUrl.includes('?') 
-                        ? `${baseUrl}&text=${encodedMessage}` 
-                        : `${baseUrl}?text=${encodedMessage}`;
-    
-                    window.open(finalUrl, '_blank');
-                });
-            });
+    jQuery(document).ready(function($) {
+    $('.lc-wpmethods-chat-btn').on('click', function(e) {
+        e.preventDefault();
+
+        let baseUrl = $(this).data('url');
+        let baseMessage = $(this).data('base-message');
+
+        let selectedVariation = '';
+        let price = $('.woocommerce-variation-price .price').text().trim();
+        let hasSelection = true;
+
+        // Check if a variation is selected
+        $('.variations select').each(function() {
+            let value = $(this).val();
+            if (!value) {
+                hasSelection = false;
+            } else {
+                let label = $(this).closest('tr').find('label').text().trim();
+                selectedVariation += `${label}: ${value} `;
+            }
+        });
+
+        // Format message based on selection
+        let variationText = '';
+        if (hasSelection && selectedVariation && price) {
+            // Variation selected, format with price
+            if (price.includes('–')) {
+                // Sale price format: "৳211.00 – ৳50.00"
+                let prices = price.split('–').map(p => p.trim());
+                if (prices.length === 2) {
+                    variationText = `Selected Variation: ${selectedVariation}- ${prices[0]}\n`;
+                    variationText += `Original price was: ${prices[0]}\n`;
+                    variationText += `*The discounted price is: ${prices[1]}.*`;
+                } else {
+                    variationText = `*Selected Variation: ${selectedVariation}- ${price}*`;
+                }
+            } else {
+                variationText = `*Selected Variation: ${selectedVariation}- ${price}*`;
+            }
+            // Remove any existing Variations block from baseMessage to avoid duplication
+            baseMessage = baseMessage.replace(/Variations:\n-.*?\n(Description:|$)/s, '');
+        }
+
+        if (variationText) {
+            baseMessage += `\n${variationText}`;
+        }
+
+        // Encode and append message to URL
+        const encodedMessage = encodeURIComponent(baseMessage.trim());
+
+        // Check if URL already has query (e.g., `?text=`), otherwise append it
+        let finalUrl = baseUrl.includes('?') 
+            ? `${baseUrl}&text=${encodedMessage}` 
+            : `${baseUrl}?text=${encodedMessage}`;
+
+        window.open(finalUrl, '_blank');
+    });
+});
     
     
             
