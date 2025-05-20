@@ -71,6 +71,45 @@
     animation: none;
 }
 
+.sfiw-icons {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 8px;
+    position: relative;
+}
+
+
+.label-sfiw {
+    font-size: 15px;
+    font-weight: bold;
+    color: white;
+    padding: 8px 15px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    position: absolute;
+    top: 50%;
+}
+
+
+.sfiw-icons:hover .label-sfiw {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(-90%) translateX(0);
+}
+
+.sfiw-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #02ed78;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
 
 
 

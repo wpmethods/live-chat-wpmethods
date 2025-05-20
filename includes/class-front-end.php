@@ -9,6 +9,7 @@ class Front_End {
 
     public function __construct() {
         add_action('wp_footer', [$this, 'render_chat_buttons']);
+        add_action('wp_footer', [$this, 'jquery_custom_lc_wpethods']);
         add_action('wp_enqueue_scripts', [$this, 'enqueue_assets']);
     }
 
@@ -37,7 +38,7 @@ class Front_End {
         $height_width = $options['height_width'] ? $options['height_width'] : '50';
         $hover_color = $options['hover_color'] ?  $options['hover_color'] : '#128C7E';
         $custom_text = $options['custom_text'] ?  $options['custom_text'] : '';
-        $custom_ver = '?text=';
+        
         $pulse_animation_border_color = $options['pulse_animation_border_color'] ?  $options['pulse_animation_border_color'] : '#25D366';
 
         // Position settings
@@ -69,10 +70,33 @@ class Front_End {
                     if (empty($url) || empty($icon_class)) {
                         continue;
                     }
+
+
+
+                    // Generate final message for each button
+                    $product_message = $this->lc_wpmethods_get_product_message();
+                    $final_message = '';
+                    if (!empty($custom_text)) {
+                        $final_message = $custom_text;
+                        if (!empty($product_message)) {
+                            $final_message .= "\n\n" . $product_message;
+                        }
+                    } elseif (!empty($product_message)) {
+                        $final_message = $product_message;
+                    }
+
+                    // Ensure UTF-8 encoding and URL-encode for WhatsApp
+                    $final_message = mb_convert_encoding($final_message, 'UTF-8');
+                    $encoded_final_message = rawurlencode($final_message);
+                    $social_link = $url . '?text=' . $encoded_final_message;
                 ?>
                     <div class="sfiw-icons">
                         <p class="label-sfiw" style="background: <?php echo esc_attr($bg_color); ?>"><?php echo esc_attr($label); ?></p>
-                        <a href="<?php echo esc_url($url); if (!empty($custom_text)) : echo esc_html('?text='.$custom_text); endif; ?>" target="_blank" style=" background: linear-gradient(45deg, <?php echo esc_attr($bg_color);?> 50%, #8b8b8b 100%); ?>;" class="lc-wpmethods-chat-btn <?php echo sanitize_html_class(strtolower($label)); ?>">
+                        <a href="#" target="_blank" style=" background: linear-gradient(45deg, <?php echo esc_attr($bg_color);?> 50%, #8b8b8b 100%); ?>;" class="lc-wpmethods-chat-btn <?php echo sanitize_html_class(strtolower($label)); ?>"
+                            data-url="<?php echo esc_url($social_link); ?>" 
+                            data-base-message="<?php echo esc_attr($this->lc_wpmethods_get_product_message()); ?>">
+                        
+                        
                             <i class="<?php echo esc_attr($icon_class); ?>" style="color: <?php echo esc_attr($color); ?>;"></i>
                         </a>
                         
@@ -106,26 +130,11 @@ class Front_End {
                 }
 
                 .sfiw-icons {
-                    display: flex;
-                    align-items: center;
                     flex-direction: <?php echo $position === 'left' ? 'row-reverse' : 'row'; ?>;
-                    justify-content: flex-start;
-                    margin-bottom: 8px;
-                    position: relative; /* Required for absolute label */
                 }
 
                 .label-sfiw {
-                    font-size: 15px;
-                    font-weight: bold;
-                    color: white;
-                    padding: 8px 15px;
                     border-radius: <?php echo $position === 'left' ? '0px 20px 20px 0px' : '20px 0px 0px 20px'; ?>;
-                    white-space: nowrap;
-                    opacity: 0;
-                    visibility: hidden;
-                    transition: all 0.3s ease;
-                    position: absolute;
-                    top: 50%;
                     transform: translateY(-90%) <?php echo $position === 'left' ? 'translateX(-10px)' : 'translateX(10px)'; ?>;
                     <?php if ($position === 'left'): ?>
                         left: 65%;
@@ -138,23 +147,7 @@ class Front_End {
                     <?php endif; ?>
                 }
 
-                .sfiw-icons:hover .label-sfiw {
-                    opacity: 1;
-                    visibility: visible;
-                    transform: translateY(-90%) translateX(0);
-                }
-
-                .sfiw-icon {
-                    width: 50px;
-                    height: 50px;
-                    border-radius: 50%;
-                    background: #02ed78;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-                }
-
+             
 
                @keyframes lc-wpmethods-pulse {
                     0% {
@@ -197,4 +190,162 @@ class Front_End {
             wp_enqueue_style('fontawesome', LC_WPMETHODS_URL . 'assets/css/all.min.css', [], '6.7.2');
         }
     }
+
+
+
+    private function lc_wpmethods_get_product_message() {
+        if (function_exists('is_woocommerce') && is_singular('product')) {
+            global $product;
+    
+            if ($product && is_a($product, 'WC_Product')) {
+                $title = $product->get_name();
+                $currency_symbol = html_entity_decode(get_woocommerce_currency_symbol(), ENT_HTML5);
+                $currency_code = get_woocommerce_currency();
+    
+                // Get short description
+                $short_description = apply_filters('woocommerce_short_description', $product->get_short_description());
+                $plain_description = wp_strip_all_tags($short_description);
+    
+                $message = "I want to buy this product and product details below:\n";
+                $message .= "Product: {$title}\n";
+    
+                // Handle variable product
+                $selected_text = '';
+                if ($product->is_type('variable')) {
+                    $variations = $product->get_available_variations();
+                    if (!empty($variations)) {
+                        $message .= "Variations:\n";
+                        foreach ($variations as $variation) {
+                            $variation_product = wc_get_product($variation['variation_id']);
+                            $price = $variation_product->get_price();
+                            $attributes = $variation['attributes'];
+                            $attribute_string = '';
+    
+                            foreach ($attributes as $key => $value) {
+                                if (!empty($value)) {
+                                    $attribute_name = wc_attribute_label(str_replace('attribute_', '', $key), $product);
+                                    $attribute_string .= "{$attribute_name}: {$value}";
+                                }
+                            }
+    
+                            $line = "- {$attribute_string} - {$currency_symbol}{$price} {$currency_code}\n";
+                            $message .= $line;
+    
+                            // Detect selected variation from $_GET
+                            $is_selected = true;
+                            foreach ($attributes as $key => $value) {
+                                if (!isset($_GET[$key]) || strtolower($_GET[$key]) !== strtolower($value)) {
+                                    $is_selected = false;
+                                    break;
+                                }
+                            }
+    
+                            if ($is_selected) {
+                                $selected_text = "Selected: {$attribute_string} - {$currency_symbol}{$price} {$currency_code}\n";
+                            }
+                        }
+    
+                        if (!empty($selected_text)) {
+                            $message .= "\n" . $selected_text;
+                        }
+                    }
+                } else {
+                    $price = $product->get_price();
+                    $message .= "Price: {$currency_symbol}{$price} {$currency_code}\n";
+                }
+    
+                // Description
+                if (!empty($plain_description)) {
+                    $message .= "Description: {$plain_description}\n";
+                }
+    
+                // Non-variation attributes
+                $attributes = $product->get_attributes();
+                $options_output = '';
+                if (!empty($attributes)) {
+                    foreach ($attributes as $attribute) {
+                        if ($attribute->get_visible() && !$attribute->get_variation()) {
+                            $name = wc_attribute_label($attribute->get_name());
+                            $options = $attribute->get_options();
+                            $option_values = array();
+                            foreach ($options as $option) {
+                                $option_values[] = wc_attribute_label($option);
+                            }
+                            if (!empty($option_values)) {
+                                $options_output .= "- {$name}: " . implode(', ', $option_values) . "\n";
+                            }
+                        }
+                    }
+    
+                    if (!empty($options_output)) {
+                        $message .= "Options:\n" . $options_output;
+                    }
+                }
+    
+                return trim($message);
+            }
+        }
+    
+        return '';
+    }
+
+
+    public function jquery_custom_lc_wpethods() {
+        if (is_product()) {
+            ?>
+            <script>
+    
+            jQuery(document).ready(function($) {
+                $('.lc-wpmethods-chat-btn').on('click', function(e) {
+                    e.preventDefault();
+    
+                    let baseUrl = $(this).data('url');
+                    let baseMessage = $(this).data('base-message');
+    
+                    let selectedVariation = '';
+                    let price = $('.woocommerce-variation-price .price').text().trim();
+    
+                    // Loop through selected attributes
+                    $('.variations select').each(function() {
+                        let label = $(this).closest('tr').find('label').text().trim();
+                        let value = $(this).val();
+                        if (value) {
+                            selectedVariation += `${label}: ${value} `;
+                        }
+                    });
+    
+                    if (selectedVariation) {
+                        baseMessage += `\nSelected: ${selectedVariation}`;
+                        if (price) {
+                            baseMessage += `- ${price}`;
+                        }
+                    }
+    
+                    // Encode and append message to URL
+                    const encodedMessage = encodeURIComponent(baseMessage.trim());
+    
+                    // Check if URL already has query (e.g., `?text=`), otherwise append it
+                    let finalUrl = baseUrl.includes('?') 
+                        ? `${baseUrl}&text=${encodedMessage}` 
+                        : `${baseUrl}?text=${encodedMessage}`;
+    
+                    window.open(finalUrl, '_blank');
+                });
+            });
+    
+    
+            
+            </script>
+            <?php
+        }
+    }
+
+ 
+    
+    
+    
 }
+
+
+
+
