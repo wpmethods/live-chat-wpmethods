@@ -1,8 +1,8 @@
-=== Social Floating Icon – Live Chat Widget ===
+=== Social Chat Floating Icons ===
 Contributors: wpmethods, ajharrashed
 Tags: live chat, wordpress live chat, floating contact widget, live chat social icon, whatsapp live chat, messenger live chat, live chat icon, whatsapp, facebook, telegram live chat
 Requires at least: 5.9
-Tested up to: 6.7
+Tested up to: 6.8
 Requires PHP: 7.4
 Stable tag: 1.0.0
 License: GPLv2 or later
@@ -29,6 +29,9 @@ Simple and intuitive admin panel to manage all settings.
 📱 Mobile Responsive Design
 Icons adapt seamlessly across all screen sizes and devices.
 
+🛒 Support WooCommerce Product
+It has woocommerce features. If customers click on the link from the product page, then it will be automatically append product price, name, atrributes, variations etc.
+
 🖼️ Font Awesome 6 Icon Support
 Use any Font Awesome 6 icon class to represent your social or chat platform.
 
@@ -38,7 +41,7 @@ Allows custom URLs like weixin://, viber://, skype: with safe sanitization.
 💬 Optional Text Labels
 Add and display custom text next to each icon for better accessibility.
 
-🔄 Drag-and-Drop Sorting (if added)
+🔄 Drag-and-Drop Sorting
 Easily reorder chat buttons to prioritize your most important platforms.
 
 🌐 Multi-language Compatible
@@ -61,9 +64,7 @@ or
 
 Getting Started
 
-1. Just go to Settings>General>Timezone from your wp-admin dashboard, then select your city. And click on save changes.
-2. Open your elementor page builder and Edit any page. And search for "order list table", then use this widget.
-
+1. Navigate to Social Chat Icons from wp-admin and add your custom links, icon, text, etc.
 == Frequently Asked Questions ==
 
 = How to set icons =

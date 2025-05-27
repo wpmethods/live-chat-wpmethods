@@ -130,7 +130,7 @@ class License_Lcw {
 
 
         // Step 2: Check success and productId
-        if ($data['data']['productId'] != 10938) {
+        if ($data['data']['productId'] != 11677) {
             update_option($this->status_key, 'inactive');
             wp_redirect(admin_url("admin.php?page={$this->plugin_slug}&error=invalid_product"));
             exit;
