@@ -44,18 +44,16 @@
 }
 
 [type=button].lc-wpmethods-chat-btn {
-    border-radius: 50%;
-    display: flex;
+    border-radius: 50% !important;
+    display: flex !important;
     align-items: center;
     justify-content: center;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
     transition: transform 0.3s ease, background 0.3s ease;
     position: relative;
-    outline: none;
-    color: #000;
-    text-decoration: none;
-    background: #fff;
-    border: none;
+    outline: none !important;
+    text-decoration: none !important;
+    border: none !important;
     cursor: pointer;
 }
 
