@@ -43,7 +43,7 @@
     transform: translateY(0);
 }
 
-.sfiw-icons .lc-wpmethods-chat-btn {
+[type=button].lc-wpmethods-chat-btn {
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -59,7 +59,7 @@
     cursor: pointer;
 }
 
-.sfiw-icons .lc-wpmethods-chat-btn:hover {
+[type=button].lc-wpmethods-chat-btn:hover {
     transform: scale(1.1); 
 }
 
@@ -97,7 +97,7 @@
 .sfiw-icons:hover .label-sfiw {
     opacity: 1;
     visibility: visible;
-    transform: translateY(-90%) translateX(0);
+    transform: translateY(-50%) translateX(0);
 }
 
 .sfiw-icon {

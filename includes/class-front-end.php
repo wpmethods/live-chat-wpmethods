@@ -89,7 +89,7 @@ class Front_End {
                 ?>
                     <div class="sfiw-icons">
                         <?php if(!empty($label)) {?>
-                        <p class="label-sfiw" style="background: <?php echo esc_attr($bg_color); ?>"><?php echo esc_html($label); ?></p>
+                        <div class="label-sfiw" style="background: <?php echo esc_attr($bg_color); ?>"><?php echo esc_html($label); ?></div>
                         <?php }?>
                         <button type="button"
                             class="lc-wpmethods-chat-btn <?php echo sanitize_html_class(strtolower($label)); ?>"
@@ -113,7 +113,7 @@ class Front_End {
             </div>
 
             <style>
-                .lc-wpmethods-chat-toggle, .lc-wpmethods-chat-btn {
+                .lc-wpmethods-chat-toggle, [type=button].lc-wpmethods-chat-btn {
                     height: <?php echo esc_attr($height_width); ?>px;
                     width: <?php echo esc_attr($height_width); ?>px;
                 }
@@ -139,7 +139,7 @@ class Front_End {
 
                 .label-sfiw {
                     border-radius: <?php echo $position === 'left' ? '0px 20px 20px 0px' : '20px 0px 0px 20px'; ?>;
-                    transform: translateY(-90%) <?php echo $position === 'left' ? 'translateX(-10px)' : 'translateX(10px)'; ?>;
+                    transform: translateY(-50%) <?php echo $position === 'left' ? 'translateX(-10px)' : 'translateX(10px)'; ?>;
                     <?php if ($position === 'left'): ?>
                         left: 65%;
                         margin-left: 8px;
