@@ -2,9 +2,9 @@
 /**
  * Plugin Name: Social Chat Floating Icons
  * Description: Display Social Chat Floating Icons or widget (WhatsApp, Messenger, Telegram) on your WordPress site.
- * Plugin URI: https://wpmethods.com
+ * Plugin URI: https://wpmethods.com/product/social-chat-floating-icons-wordpress-plugin/
  * Author: WP Methods
- * Author URI: https://wpmethods.com
+ * Author URI: https://wpmethods.com/about
  * Version: 1.0.0
  * Text Domain: social-chat-floating-icons
  * Contributors: wpmethods,ajharrashed
