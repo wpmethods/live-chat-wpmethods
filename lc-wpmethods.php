@@ -6,7 +6,11 @@
  * Author: WP Methods
  * Author URI: https://wpmethods.com
  * Version: 1.0.0
- * Text Domain: lc-wpmethods
+ * Text Domain: live-chat-socials
+ * License: GPLv2 or later
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
+ * Requires at least: 5.9
+ * Requires PHP: 7.4
  * Domain Path: /languages
  */
 
@@ -21,7 +25,7 @@ define('LC_WPMETHODS_URL', plugin_dir_url(__FILE__));
 define('VERSION_SFIW', '1.0.0');
 
 // Autoload Classes
-require_once LC_WPMETHODS_PATH . 'vendor/autoload.php';
+require_once LC_WPMETHODS_PATH . 'file_autoloader/autoload.php';
 
 // Initialize
 add_action('plugins_loaded', function() {
