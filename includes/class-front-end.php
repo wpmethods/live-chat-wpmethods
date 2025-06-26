@@ -249,11 +249,21 @@ class Front_End {
                             // Detect selected variation from $_GET
                             $is_selected_var = true;
                             foreach ($attributes as $key => $value) {
-                                if (!isset($_GET[$key]) || strtolower($_GET[$key]) !== strtolower($value)) {
+                                // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+                                if (!isset($_GET[$key])) {
+                                    $is_selected_var = false;
+                                    break;
+                                }
+
+                                // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+                                $user_input = sanitize_text_field(wp_unslash($_GET[$key])); // sanitize + unslash
+
+                                if (strtolower($user_input) !== strtolower($value)) {
                                     $is_selected_var = false;
                                     break;
                                 }
                             }
+
 
                             if ($is_selected_var) {
                                 $is_selected = true;

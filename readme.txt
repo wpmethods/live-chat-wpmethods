@@ -1,6 +1,6 @@
 === Social Chat Floating Icons ===
 Contributors: wpmethods, ajharrashed
-Tags: live chat, wordpress live chat, floating contact widget, live chat social icon, whatsapp live chat, messenger live chat, live chat icon, whatsapp, facebook, telegram live chat
+Tags: live chat, wordpress live chat, floating contact widget, messenger live chat, live chat icon
 Requires at least: 5.9
 Tested up to: 6.8
 Requires PHP: 7.4

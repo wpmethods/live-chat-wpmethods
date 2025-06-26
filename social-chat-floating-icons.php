@@ -6,7 +6,8 @@
  * Author: WP Methods
  * Author URI: https://wpmethods.com
  * Version: 1.0.0
- * Text Domain: live-chat-socials
+ * Text Domain: social-chat-floating-icons
+ * Contributors: wpmethods,ajharrashed
  * License: GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Requires at least: 5.9

@@ -17,10 +17,10 @@ class Admin_Settings_Lcw{
     public function add_menu_page()
     {
         add_menu_page(
-            __('Chat Floating Icons', 'lc-wpmethods'),
-            __('Chat Floating Icons', 'lc-wpmethods'),
+            __('Chat Floating Icons', 'social-chat-floating-icons'),
+            __('Chat Floating Icons', 'social-chat-floating-icons'),
             'manage_options',
-            'lc-wpmethods-settings',
+            'social-chat-floating-icons-settings',
             [$this, 'settings_page'],
             'dashicons-format-chat'
         );
@@ -28,16 +28,17 @@ class Admin_Settings_Lcw{
 
     public function enqueue_assets($hook)
     {
-        if ($hook !== 'toplevel_page_lc-wpmethods-settings') {
+        if ($hook !== 'toplevel_page_social-chat-floating-icons-settings') {
             return;
         }
         $min_suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
         wp_enqueue_style('wp-color-picker');
-        wp_enqueue_style('lc-wpmethods-admin', LC_WPMETHODS_URL . 'assets/css/admin'. $min_suffix . '.css', [], VERSION_SFIW);
-        wp_enqueue_script('lc-wpmethods-admin', LC_WPMETHODS_URL . 'assets/js/admin'. $min_suffix . '.js', ['jquery', 'wp-color-picker'], VERSION_SFIW, true);
+        wp_enqueue_style('social-chat-floating-icons-admin', LC_WPMETHODS_URL . 'assets/css/admin'. $min_suffix . '.css', [], VERSION_SFIW);
+        wp_enqueue_script('social-chat-floating-icons-admin', LC_WPMETHODS_URL . 'assets/js/admin'. $min_suffix . '.js', ['jquery', 'wp-color-picker'], VERSION_SFIW, true);
         
         // Enqueue FontAwesome for icons
         wp_enqueue_style('fontawesome', LC_WPMETHODS_URL . 'assets/css/all.min.css', [], '6.7.2');
+        wp_enqueue_script('social-chat-floating-icons-sortable', LC_WPMETHODS_URL . 'assets/js/Sortable'. $min_suffix . '.js', ['jquery'], VERSION_SFIW, true);
     }
 
 
@@ -112,19 +113,21 @@ class Admin_Settings_Lcw{
 
         ?>
         <div class="wrap">
-            <h1><?php esc_html_e('Social Floating Icons', 'lc-wpmethods'); ?></h1>
-
-            <?php if (isset($_GET['settings-updated']) && $_GET['settings-updated'] == true) {
+            <h1><?php esc_html_e('Social Floating Icons', 'social-chat-floating-icons'); ?></h1>
+            
+            <?php 
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+            if (isset($_GET['settings-updated']) && $_GET['settings-updated'] == true) {
                 echo '<div class="notice notice-success is-dismissible"><p>Changes saved!</p></div>';
             } ?>
 
             <div class="lc-tabs">
-                <button class="lc-tab-button active" data-tab="general"><?php esc_html_e('Icons & Links', 'lc-wpmethods'); ?></button>
-                <button class="lc-tab-button" data-tab="style"><?php esc_html_e('Widget Styles', 'lc-wpmethods'); ?></button>
+                <button class="lc-tab-button active" data-tab="general"><?php esc_html_e('Icons & Links', 'social-chat-floating-icons'); ?></button>
+                <button class="lc-tab-button" data-tab="style"><?php esc_html_e('Widget Styles', 'social-chat-floating-icons'); ?></button>
                 <?php if(function_exists('is_woocommerce')) { ?>
-                <button class="lc-tab-button" data-tab="woocommerce"><?php esc_html_e('WooCommerce', 'lc-wpmethods'); ?></button>
+                <button class="lc-tab-button" data-tab="woocommerce"><?php esc_html_e('WooCommerce', 'social-chat-floating-icons'); ?></button>
                 <?php } ?>
-                <button class="lc-tab-button" data-tab="help"><?php esc_html_e('Help', 'lc-wpmethods'); ?></button>
+                <button class="lc-tab-button" data-tab="help"><?php esc_html_e('Help', 'social-chat-floating-icons'); ?></button>
             </div>
 
             <form method="post" action="options.php">
@@ -230,42 +233,42 @@ class Admin_Settings_Lcw{
                 <div class="lc-tab-content" id="tab-style">
                     <table class="form-table">
                         <tr valign="top">
-                                <th scope="row"><?php esc_html_e('Widget Icon', 'lc-wpmethods'); ?></th>
+                                <th scope="row"><?php esc_html_e('Widget Icon', 'social-chat-floating-icons'); ?></th>
                                 <td><input type="text" name="lc_wpmethods_settings[toggle_icon_class]" value="<?php echo esc_attr($options['toggle_icon_class'] ?? 'fas fa-comment-dots'); ?>" placeholder="Ex: fas fa-comment-dots" /></td>
                         </tr>
                         <tr valign="top">
-                            <th scope="row"><?php esc_html_e('Button Background', 'lc-wpmethods'); ?></th>
+                            <th scope="row"><?php esc_html_e('Button Background', 'social-chat-floating-icons'); ?></th>
                             <td><input type="text" name="lc_wpmethods_settings[toggle_bg_color]" value="<?php echo esc_attr($options['toggle_bg_color'] ?? '#00DA62'); ?>" class="color-field" /></td>
                         </tr>
                         <tr valign="top">
-                            <th scope="row"><?php esc_html_e('Gradient Background', 'lc-wpmethods'); ?></th>
+                            <th scope="row"><?php esc_html_e('Gradient Background', 'social-chat-floating-icons'); ?></th>
                             <td><input type="text" name="lc_wpmethods_settings[toggle_gbg_color]" value="<?php echo esc_attr($options['toggle_gbg_color'] ?? ''); ?>" class="color-field" /></td>
                         </tr>
                         <tr valign="top">
-                            <th scope="row"><?php esc_html_e('Icon Color', 'lc-wpmethods'); ?></th>
+                            <th scope="row"><?php esc_html_e('Icon Color', 'social-chat-floating-icons'); ?></th>
                             <td><input type="text" name="lc_wpmethods_settings[icon_color]" value="<?php echo esc_attr($options['icon_color'] ?? '#FFFFFF'); ?>" class="color-field" /></td>
                         </tr>
                         <tr valign="top">
-                            <th scope="row"><?php esc_html_e('Icon Size (px)', 'lc-wpmethods'); ?></th>
+                            <th scope="row"><?php esc_html_e('Icon Size (px)', 'social-chat-floating-icons'); ?></th>
                             <td><input type="number" name="lc_wpmethods_settings[icon_size]" value="<?php echo esc_attr($options['icon_size'] ?? '30'); ?>" /></td>
                         </tr>
                         <tr valign="top">
-                            <th scope="row"><?php esc_html_e('Button Size (px)', 'lc-wpmethods'); ?></th>
+                            <th scope="row"><?php esc_html_e('Button Size (px)', 'social-chat-floating-icons'); ?></th>
                             <td><input type="number" name="lc_wpmethods_settings[height_width]" value="<?php echo esc_attr($options['height_width'] ?? '50'); ?>" /></td>
                         </tr>
                         <tr valign="top">
-                            <th scope="row"><?php esc_html_e('Hover Color', 'lc-wpmethods'); ?></th>
+                            <th scope="row"><?php esc_html_e('Hover Color', 'social-chat-floating-icons'); ?></th>
                             <td><input type="text" name="lc_wpmethods_settings[hover_color]" value="<?php echo esc_attr($options['hover_color'] ?? '#128C7E'); ?>" class="color-field" /></td>
                         </tr>
 
                         <tr valign="top">
-                            <th scope="row"><?php esc_html_e('Pulse Animation Circle', 'lc-wpmethods'); ?></th>
+                            <th scope="row"><?php esc_html_e('Pulse Animation Circle', 'social-chat-floating-icons'); ?></th>
                             <td><input type="text" name="lc_wpmethods_settings[pulse_animation_border_color]" value="<?php echo esc_attr($options['pulse_animation_border_color'] ?? '#00DA62'); ?>" class="color-field" /></td>
                         </tr>
 
 
                         <tr valign="top">
-                            <th scope="row"><?php esc_html_e('Messege', 'lc-wpmethods'); ?></th>
+                            <th scope="row"><?php esc_html_e('Messege', 'social-chat-floating-icons'); ?></th>
                             <td>
                                 <textarea name="lc_wpmethods_settings[custom_text]" rows="4" cols="50" placeholder="Ex: Hi, how are you?" ><?php echo esc_attr($options['custom_text'] ?? ''); ?></textarea>
                             </td>
@@ -273,36 +276,36 @@ class Admin_Settings_Lcw{
 
 
                         <tr valign="top">
-                            <th scope="row"><?php esc_html_e('Button Position', 'lc-wpmethods'); ?></th>
+                            <th scope="row"><?php esc_html_e('Button Position', 'social-chat-floating-icons'); ?></th>
                             <td>
                                 <select name="lc_wpmethods_settings[position]">
-                                    <option value="right" <?php selected($options['position'] ?? '', 'right'); ?>><?php esc_html_e('Right', 'lc-wpmethods'); ?></option>
-                                    <option value="left" <?php selected($options['position'] ?? '', 'left'); ?>><?php esc_html_e('Left', 'lc-wpmethods'); ?></option>
+                                    <option value="right" <?php selected($options['position'] ?? '', 'right'); ?>><?php esc_html_e('Right', 'social-chat-floating-icons'); ?></option>
+                                    <option value="left" <?php selected($options['position'] ?? '', 'left'); ?>><?php esc_html_e('Left', 'social-chat-floating-icons'); ?></option>
                                 </select>
                             </td>
                         </tr>
 
                         <tr valign="top">
-                            <th scope="row"><?php esc_html_e('Bottom Offset', 'lc-wpmethods'); ?></th>
+                            <th scope="row"><?php esc_html_e('Bottom Offset', 'social-chat-floating-icons'); ?></th>
                             <td>
                                 <input type="text" name="lc_wpmethods_settings[bottom_offset]" value="<?php echo esc_attr($options['bottom_offset'] ?? '20px'); ?>" placeholder="Ex: 20px or 5%" />
-                                <p class="description"><?php esc_html_e('Distance from the bottom of the screen.', 'lc-wpmethods'); ?></p>
+                                <p class="description"><?php esc_html_e('Distance from the bottom of the screen.', 'social-chat-floating-icons'); ?></p>
                             </td>
                         </tr>
 
                         <tr valign="top">
-                            <th scope="row"><?php esc_html_e('Left Offset', 'lc-wpmethods'); ?></th>
+                            <th scope="row"><?php esc_html_e('Left Offset', 'social-chat-floating-icons'); ?></th>
                             <td>
                                 <input type="text" name="lc_wpmethods_settings[left_offset]" value="<?php echo esc_attr($options['left_offset'] ?? '20px'); ?>" placeholder="Ex: 20px" />
-                                <p class="description"><?php esc_html_e('Distance from the left if position is set to "Left".', 'lc-wpmethods'); ?></p>
+                                <p class="description"><?php esc_html_e('Distance from the left if position is set to "Left".', 'social-chat-floating-icons'); ?></p>
                             </td>
                         </tr>
 
                         <tr valign="top">
-                            <th scope="row"><?php esc_html_e('Right Offset', 'lc-wpmethods'); ?></th>
+                            <th scope="row"><?php esc_html_e('Right Offset', 'social-chat-floating-icons'); ?></th>
                             <td>
                                 <input type="text" name="lc_wpmethods_settings[right_offset]" value="<?php echo esc_attr($options['right_offset'] ?? '20px'); ?>" placeholder="Ex: 20px" />
-                                <p class="description"><?php esc_html_e('Distance from the right if position is set to "Right".', 'lc-wpmethods'); ?></p>
+                                <p class="description"><?php esc_html_e('Distance from the right if position is set to "Right".', 'social-chat-floating-icons'); ?></p>
                             </td>
                         </tr>
 
@@ -313,7 +316,7 @@ class Admin_Settings_Lcw{
                 <div class="lc-tab-content" id="tab-woocommerce">
                 <table class="form-table">
                     <tr valign="top">
-                        <th scope="row"><?php esc_html_e('Track WooCommerce Product', 'lc-wpmethods'); ?></th>
+                        <th scope="row"><?php esc_html_e('Track WooCommerce Product', 'social-chat-floating-icons'); ?></th>
                         <td>
                             <input type="checkbox"
                                 name="lc_wpmethods_settings[track_woo_product]"
@@ -322,21 +325,21 @@ class Admin_Settings_Lcw{
                         </td>
                     </tr>
                     <tr valign="top">
-                        <th scope="row"><?php esc_html_e('Custom Product Message', 'lc-wpmethods'); ?></th>
+                        <th scope="row"><?php esc_html_e('Custom Product Message', 'social-chat-floating-icons'); ?></th>
                         <td>
                             <textarea name="lc_wpmethods_settings[woo_product_msg]" rows="4" cols="50" placeholder="I want to buy this product"><?php echo esc_textarea($options['woo_product_msg'] ?? 'I want to buy this product and product details below'); ?></textarea>
-                            <p class="description"><?php esc_html_e('You can type product message', 'lc-wpmethods'); ?></p>
+                            <p class="description"><?php esc_html_e('You can type product message', 'social-chat-floating-icons'); ?></p>
                         </td>
                     </tr>
 
                     <tr valign="top">
-                        <th scope="row"><?php esc_html_e('Product title label', 'lc-wpmethods'); ?></th>
+                        <th scope="row"><?php esc_html_e('Product title label', 'social-chat-floating-icons'); ?></th>
                         <td><input type="text" name="lc_wpmethods_settings[woo_product_name]" value="<?php echo esc_attr($options['woo_product_name'] ?? 'Product Name'); ?>" placeholder="Product Name" /></td>
                     </tr>
 
 
                     <tr valign="top">
-                        <th scope="row"><?php esc_html_e('Product price label', 'lc-wpmethods'); ?></th>
+                        <th scope="row"><?php esc_html_e('Product price label', 'social-chat-floating-icons'); ?></th>
                         <td><input type="text" name="lc_wpmethods_settings[woo_product_price]" value="<?php echo esc_attr($options['woo_product_price'] ?? 'Price'); ?>" placeholder="Price" /></td>
                     </tr>
 
@@ -345,7 +348,7 @@ class Admin_Settings_Lcw{
                 <?php } ?>
 
                 <div class="lc-tab-content" id="tab-help">
-                    <h2><?php esc_html_e('Chat Social Links Example', 'lc-wpmethods'); ?></h2>
+                    <h2><?php esc_html_e('Chat Social Links Example', 'social-chat-floating-icons'); ?></h2>
                     <ul>
                         <li><strong>WhatsApp:</strong> https://wa.me/your-number (Ex: https://wa.me/1797150000)</li>
                         <li><strong>Messenger:</strong> https://m.me/your-page</li>
@@ -364,7 +367,7 @@ class Admin_Settings_Lcw{
 
                     </ul>
 
-                    <h2><?php esc_html_e('Font Awesome 6 Icon Class Examples', 'lc-wpmethods'); ?></h2>
+                    <h2><?php esc_html_e('Font Awesome 6 Icon Class Examples', 'social-chat-floating-icons'); ?></h2>
                     <ul>
                         <li><code>fas fa-home</code></li>
                         <li><code>fab fa-whatsapp</code></li>
@@ -403,7 +406,7 @@ class Admin_Settings_Lcw{
                     </ul>
 
                     <p>
-                        <?php esc_html_e('Use any FontAwesome 6 class name for your icon. You can browse icons at:', 'lc-wpmethods'); ?>
+                        <?php esc_html_e('Use any FontAwesome 6 class name for your icon. You can browse icons at:', 'social-chat-floating-icons'); ?>
                         <a href="https://fontawesome.com/v6/search" target="_blank">https://fontawesome.com/icons</a>
                     </p>
 
@@ -417,7 +420,6 @@ class Admin_Settings_Lcw{
             </form>
 
 
-            <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 
             <script>
             document.addEventListener("DOMContentLoaded", function () {
@@ -475,7 +477,7 @@ class Admin_Settings_Lcw{
                         </div>
                         
 
-                        <button type="button" class="cl-wpmethods-remove-field button" style="margin-top: 10px;"><?php esc_html_e('Remove', 'lc-wpmethods'); ?></button>
+                        <button type="button" class="cl-wpmethods-remove-field button" style="margin-top: 10px;"><?php esc_html_e('Remove', 'social-chat-floating-icons'); ?></button>
                     `;
 
                     container.appendChild(fieldGroup);
