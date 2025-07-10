@@ -15,9 +15,9 @@ class Front_End {
     public function enqueue_assets() {
         $min_suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
         $this->maybe_enqueue_fontawesome();
-        wp_enqueue_style('lc-wpmethods-css', LC_WPMETHODS_URL . 'assets/css/front-end'. $min_suffix . '.css', [], VERSION_SFIW);
-        wp_enqueue_script('lc-wpmethods-js', LC_WPMETHODS_URL . 'assets/js/front-end'. $min_suffix . '.js', ['jquery'], VERSION_SFIW, true);
-        //wp_enqueue_script('lc-wpmethods-button-js', LC_WPMETHODS_URL . 'assets/js/custom-button'. $min_suffix . '.js', ['jquery'], VERSION_SFIW, true);
+        wp_enqueue_style('lc-wpmethods-css', LC_WPMETHODS_URL . 'assets/css/front-end'. $min_suffix . '.css', [], VERSION_WSCFI);
+        wp_enqueue_script('lc-wpmethods-js', LC_WPMETHODS_URL . 'assets/js/front-end'. $min_suffix . '.js', ['jquery'], VERSION_WSCFI, true);
+        //wp_enqueue_script('lc-wpmethods-button-js', LC_WPMETHODS_URL . 'assets/js/custom-button'. $min_suffix . '.js', ['jquery'], VERSION_WSCFI, true);
     }
 
     public function render_chat_buttons()

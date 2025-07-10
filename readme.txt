@@ -1,4 +1,4 @@
-=== Social Chat Floating Icons ===
+=== Wpmethods Social Chat Floating Icons ===
 Contributors: wpmethods, ajharrashed
 Tags: live chat, wordpress live chat, floating contact widget, messenger live chat, live chat icon
 Requires at least: 5.9
@@ -75,15 +75,6 @@ You, can set fontawesome icon and go to wp-admin>Chat Floating Icons>Help. Here 
 
 You, can set from wp-admin>Chat Floating Icons>Help. Here you will get docs
 
-
-== Screenshots ==
-
-1. Show order list from specific status
-2. Change table styles
-3. Show customer order information
-4. Change order status background, icon, text
-5. Buy Now Button to directly order specific product.
-6. Responsive for mobile device
 
 == Changelog ==
 

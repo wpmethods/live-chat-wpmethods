@@ -7,7 +7,7 @@ class License_Lcw {
     private $option_key      = 'wpmlc_license_key';
     private $status_key      = 'wpmlc_license_status';
     private $token_key       = 'wpmlc_activation_token';
-    private $plugin_slug     = 'social-chat-floating-icons-license';
+    private $plugin_slug     = 'wpmethods-social-chat-floating-icons-license';
 
     private $api_url         = 'https://wpmethods.com/wp-json/lmfwc/v2/licenses/';
     private $consumer_key    = 'ck_2e0a2a0d50741489c4d2fe41678e205e7fce55ac';
@@ -22,9 +22,9 @@ class License_Lcw {
 
     public function add_license_page() {
         add_submenu_page(
-            'social-chat-floating-icons-settings',
-            __('Live Chat License', 'social-chat-floating-icons'),
-            __('Active License', 'social-chat-floating-icons'),
+            'wpmethods-social-chat-floating-icons-settings',
+            __('Live Chat License', 'wpmethods-social-chat-floating-icons'),
+            __('Active License', 'wpmethods-social-chat-floating-icons'),
             'manage_options',
             $this->plugin_slug,
             [$this, 'render_license_page']
@@ -43,14 +43,14 @@ class License_Lcw {
 
         add_settings_section(
             'wpmlc_license_section',
-            __('License Activation', 'social-chat-floating-icons'),
+            __('License Activation', 'wpmethods-social-chat-floating-icons'),
             '__return_false',
             $this->plugin_slug
         );
 
         add_settings_field(
             $this->option_key,
-            __('License Key', 'social-chat-floating-icons'),
+            __('License Key', 'wpmethods-social-chat-floating-icons'),
             [$this, 'license_key_field'],
             $this->plugin_slug,
             'wpmlc_license_section'
@@ -85,7 +85,7 @@ class License_Lcw {
                     <?php
                     settings_fields('wpmlc_license_settings');
                     do_settings_sections($this->plugin_slug);
-                    submit_button(__('Save License Key', 'social-chat-floating-icons'));
+                    submit_button(__('Save License Key', 'wpmethods-social-chat-floating-icons'));
                     ?>
                 </form>
 
@@ -93,20 +93,20 @@ class License_Lcw {
                     <input type="hidden" name="action" value="wpmlc_verify_license">
                     <?php wp_nonce_field('wpmlc_verify_license_nonce', 'wpmlc_nonce'); ?>
                     <input type="password" name="license_key" value="<?php echo esc_attr($license_key); ?>" placeholder="Enter License Key" style="width: 100%; margin-top: 10px;">
-                    <button type="submit" class="button button-primary" style="margin-top: 10px;"><?php esc_html_e('Verify License', 'social-chat-floating-icons'); ?></button>
+                    <button type="submit" class="button button-primary" style="margin-top: 10px;"><?php esc_html_e('Verify License', 'wpmethods-social-chat-floating-icons'); ?></button>
                 </form>
 
                 <hr style="margin: 20px 0;">
 
                 <?php if ($license_status === 'active') : ?>
-                    <p style="color: green; font-weight: bold;">✔ <?php esc_html_e('License Activated', 'social-chat-floating-icons'); ?></p>
+                    <p style="color: green; font-weight: bold;">✔ <?php esc_html_e('License Activated', 'wpmethods-social-chat-floating-icons'); ?></p>
                     <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
                         <input type="hidden" name="action" value="wpmlc_deactivate_license">
                         <?php wp_nonce_field('wpmlc_deactivate_license_nonce', 'wpmlc_nonce'); ?>
-                        <button type="submit" class="button" style="background: #dc3545; color: #fff;"><?php esc_html_e('Deactivate License', 'social-chat-floating-icons'); ?></button>
+                        <button type="submit" class="button" style="background: #dc3545; color: #fff;"><?php esc_html_e('Deactivate License', 'wpmethods-social-chat-floating-icons'); ?></button>
                     </form>
                 <?php else : ?>
-                    <p style="color: red; font-weight: bold;">✖ <?php esc_html_e('License Not Activated', 'social-chat-floating-icons'); ?></p>
+                    <p style="color: red; font-weight: bold;">✖ <?php esc_html_e('License Not Activated', 'wpmethods-social-chat-floating-icons'); ?></p>
                     <h4>🛒 <a href="https://wpmethods.com/social-floating-icon" target="_blank">Click here</a> to buy the licnese key </h4>
                 <?php endif; ?>
                 
@@ -119,7 +119,7 @@ class License_Lcw {
     public function verify_license() {
         
         if (!current_user_can('manage_options') || !check_admin_referer('wpmlc_verify_license_nonce', 'wpmlc_nonce')) {
-            wp_die(esc_html__('Unauthorized request', 'social-chat-floating-icons'));
+            wp_die(esc_html__('Unauthorized request', 'wpmethods-social-chat-floating-icons'));
         }
 
         if (isset($_POST['license_key'])) {
@@ -189,7 +189,7 @@ class License_Lcw {
 
     public function deactivate_license() {
         if (!current_user_can('manage_options') || !check_admin_referer('wpmlc_deactivate_license_nonce', 'wpmlc_nonce')) {
-            wp_die(esc_html__('Unauthorized request', 'social-chat-floating-icons'));
+            wp_die(esc_html__('Unauthorized request', 'wpmethods-social-chat-floating-icons'));
         }
 
         $license_key = get_option($this->option_key);
