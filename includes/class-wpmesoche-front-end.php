@@ -32,6 +32,8 @@ class Wpmesoche_Front_End {
             's_bg_color' => '',
         ]];
 
+        $limit   = apply_filters('wpmethods_social_chat_link_limit', 2);
+
         $toggle_icon_class = $options['toggle_icon_class'] ? $options['toggle_icon_class'] : 'fas fa-comment-dots';
         $toggle_color = $options['toggle_bg_color'] ? $options['toggle_bg_color'] : '#00DA62';
         $toggle_g_color = $options['toggle_gbg_color'] ? $options['toggle_gbg_color'] : '';
@@ -62,7 +64,7 @@ class Wpmesoche_Front_End {
 
         <div class="lc-wpmethods-chat-container" id="lcWpmethodsChatContainer"  style="bottom: <?php echo esc_attr($bottom_offset); ?>; <?php echo esc_attr($side_offset_style); ?> z-index: 9999;">
             <div class="lc-wpmethods-chat-options" id="chatOptions">
-                <?php foreach ($lc_wpmethods_links as $link) : 
+                <?php foreach (array_slice($lc_wpmethods_links, 0, $limit) as $link) : 
                     $url = !empty($link['url']) ? $link['url'] : 'https://wa.me/your-whatsapp-number';
                     $icon_class = !empty($link['icon']) ? $link['icon'] : 'fab fa-whatsapp';
                     $label = !empty($link['label']) ? $link['label'] : '';

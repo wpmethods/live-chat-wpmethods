@@ -33,8 +33,6 @@ require_once WPMESOCHE_WPMETHODS_PATH . 'file_autoloader/autoload.php';
 add_action('plugins_loaded', function() {
     if (is_admin()) {
         new WPMESOCHE\Wpmesoche_Admin_Settings();
-        new WPMESOCHE\Wpmesoche_License_Settings();
-
     } else {
         new WPMESOCHE\Wpmesoche_Front_End();
     }

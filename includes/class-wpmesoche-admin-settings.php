@@ -62,9 +62,13 @@ class Wpmesoche_Admin_Settings{
     
    
 
-    public function wpmesoche_sanitize_settings($settings)
-    {
+    public function wpmesoche_sanitize_settings($settings){
+        $limit = apply_filters('wpmethods_social_chat_link_limit', 2);
         if (isset($settings['lc_wpmethods_links']) && is_array($settings['lc_wpmethods_links'])) {
+            //If limit is active (PRO inactive), cut extra items
+            if (count($settings['lc_wpmethods_links']) > $limit) {
+                $settings['lc_wpmethods_links'] = array_slice($settings['lc_wpmethods_links'], 0, $limit);
+            }
             foreach ($settings['lc_wpmethods_links'] as &$link) {
                 $link['url']   = sanitize_text_field($link['url'] ?? '');
                 $link['icon']  = sanitize_text_field($link['icon'] ?? '');
@@ -108,9 +112,6 @@ class Wpmesoche_Admin_Settings{
         $options = get_option('lc_wpmethods_settings', []);
         $lc_wpmethods_links = $options['lc_wpmethods_links'] ?? [];
 
-        $license_status = get_option('wpmlc_license_status', 'inactive');
-        $limit_items = ($license_status !== 'active');
-
         ?>
         <div class="wrap">
             <h1><?php esc_html_e('Social Floating Icons', 'wpmethods-social-chat-floating-icons'); ?></h1>
@@ -136,11 +137,13 @@ class Wpmesoche_Admin_Settings{
 
                 <div class="lc-tab-content active" id="tab-general">
                     <div id="cl-wpmethods-repeater-fields">
-                        <?php if (!empty($lc_wpmethods_links)) : ?>
+                        <?php 
+                        $limit = apply_filters('wpmethods_social_chat_link_limit', 2);
+                        if (!empty($lc_wpmethods_links)) : ?>
                             <?php 
                             $displayed_count = 0;
                             foreach ($lc_wpmethods_links as $index => $link) : 
-                                if ($limit_items && $displayed_count >= 2) {
+                                if ($displayed_count >= $limit) {
                                     break;
                                 }
                                 $displayed_count++;
@@ -227,7 +230,12 @@ class Wpmesoche_Admin_Settings{
                         <?php endif; ?>
                     </div>
 
-                    <button type="button" id="cl-wpmethods-add-field">Add Link</button>
+                    <button type="button" id="cl-wpmethods-add-field" style="display: none">Add Link</button>
+                    <?php if ( ! defined( 'WPMESOCHE_PRO_VERSION' ) ) : ?>
+                        <p style="margin-top: 10px; color: #d63638; font-weight: 500;">
+                            Want to add more links? <a href="https://wpmethods.com/product/social-chat-floating-icons-wordpress-plugin" target="_blank" style="text-decoration: underline;">Upgrade to Pro</a>
+                        </p>
+                    <?php endif; ?>
                 </div>
 
                 <div class="lc-tab-content" id="tab-style">
@@ -425,21 +433,31 @@ class Wpmesoche_Admin_Settings{
             document.addEventListener("DOMContentLoaded", function () {
                 const addButton = document.getElementById("cl-wpmethods-add-field");
                 const container = document.getElementById("cl-wpmethods-repeater-fields");
-                const limit = <?php echo $limit_items ? 'true' : 'false'; ?>;
-                let counter = <?php echo count($lc_wpmethods_links); ?>;
 
-                // Add Field
+                // Track index for input name attributes
+                let counter = <?php echo (int) count($lc_wpmethods_links); ?>;
+
+                // Set link limit
+                let limit_links = <?php echo (int) apply_filters('wpmethods_social_chat_link_limit', 2); ?>;
+
+                if (limit_links && counter < limit_links) {
+                    addButton.style.display = 'inline-block'; // or 'block' if you prefer
+                }
+
+                // Add New Field
                 addButton?.addEventListener("click", function () {
-                    const count = container.querySelectorAll(".cl-wpmethods-field-group").length;
+                    const totalFields = container.querySelectorAll(".cl-wpmethods-field-group").length;
 
-                    if (limit && count >= 2) {
-                        alert("The free version allows only up to 2 links. Please activate your license for unlimited links.");
+                    // Check limit
+                    if (limit_links && totalFields >= limit_links) {
+                        addButton.style.display = 'none';
                         return;
                     }
 
                     const fieldGroup = document.createElement("div");
                     fieldGroup.className = "cl-wpmethods-field-group";
                     fieldGroup.style.marginBottom = "15px";
+
                     fieldGroup.innerHTML = `
                         <div class="cl-wpmethods-preview-icon" style="margin-bottom: 8px;">
                             <i class="fab fa-whatsapp"></i>
@@ -450,7 +468,7 @@ class Wpmesoche_Admin_Settings{
                             <input type="text" id="cl-color-${counter}" name="lc_wpmethods_settings[lc_wpmethods_links][${counter}][color]" class="color-picker" placeholder="Pick Icon Color" />
                         </div>
 
-                        <div  class="flex-cl-wpmethods">
+                        <div class="flex-cl-wpmethods">
                             <label class="cl-label-wpm" for="cl-url-${counter}">Enter URL</label>
                             <input type="text" id="cl-url-${counter}" name="lc_wpmethods_settings[lc_wpmethods_links][${counter}][url]" placeholder="URL (Ex: https://wa.me/88017900000)" />
                         </div>
@@ -465,7 +483,6 @@ class Wpmesoche_Admin_Settings{
                             <input type="text" id="cl-label-${counter}" name="lc_wpmethods_settings[lc_wpmethods_links][${counter}][label]" placeholder="Enter Label (Ex: Whatsapp)" />
                         </div>
 
-                        
                         <div class="flex-cl-wpmethods">
                             <label class="cl-label-wpm" for="cl-bgcolor-${counter}">Background Color</label>
                             <input type="text" id="cl-bgcolor-${counter}" name="lc_wpmethods_settings[lc_wpmethods_links][${counter}][bg_color]" class="color-picker" placeholder="Pick Background Color" />
@@ -475,20 +492,29 @@ class Wpmesoche_Admin_Settings{
                             <label class="cl-label-wpm" for="cl-sbgcolor-${counter}">Gradient Color</label>
                             <input type="text" id="cl-sbgcolor-${counter}" name="lc_wpmethods_settings[lc_wpmethods_links][${counter}][s_bg_color]" class="color-picker" placeholder="Gradient Color" />
                         </div>
-                        
 
                         <button type="button" class="cl-wpmethods-remove-field button" style="margin-top: 10px;"><?php esc_html_e('Remove', 'wpmethods-social-chat-floating-icons'); ?></button>
                     `;
 
                     container.appendChild(fieldGroup);
                     initializeColorPickers();
-                    counter++;
+                    counter++; // only used for naming input names
+
+                    // Check again after adding
+                    if (limit_links && container.querySelectorAll(".cl-wpmethods-field-group").length >= limit_links) {
+                        addButton.style.display = 'none';
+                    }
                 });
 
                 // Remove field
                 container.addEventListener("click", function (e) {
                     if (e.target.classList.contains("cl-wpmethods-remove-field")) {
                         e.target.closest(".cl-wpmethods-field-group").remove();
+
+                        // After removing, check if below limit to re-show button
+                        if (limit_links && container.querySelectorAll(".cl-wpmethods-field-group").length < limit_links) {
+                            addButton.style.display = '';
+                        }
                     }
                 });
 
@@ -516,6 +542,7 @@ class Wpmesoche_Admin_Settings{
                     initializeColorPickers();
                 });
             });
+
             </script>
 
         </div>
