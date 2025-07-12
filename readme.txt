@@ -1,4 +1,4 @@
-=== Wpmethods Social Chat Floating Icons to Display WhatsApp, Messenger, Telegram, etc. ===
+=== Wpmethods Social Chat Floating Icons ===
 Contributors: wpmethods, ajharrashed
 Tags: Social Chat Floating Icon, wordpress live chat, floating contact widget, messenger live chat, live chat icon
 Requires at least: 5.9

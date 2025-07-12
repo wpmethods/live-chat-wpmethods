@@ -1,8 +1,8 @@
 <?php
-namespace LC_WPMethods;
+namespace WPMESOCHE;
 if (!defined('ABSPATH')) exit;
 
-class License_Lcw {
+class Wpmesoche_License_Settings {
 
     private $option_key      = 'wpmlc_license_key';
     private $status_key      = 'wpmlc_license_status';

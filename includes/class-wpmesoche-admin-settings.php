@@ -1,55 +1,55 @@
 <?php
-namespace LC_WPMethods;
+namespace WPMESOCHE;
 
 if (!defined('ABSPATH')) {
     exit;
 }
 
-class Admin_Settings_Lcw{
+class Wpmesoche_Admin_Settings{
     private $option_key      = 'wpmlc_license_key';
     public function __construct()
     {
-        add_action('admin_menu', [$this, 'add_menu_page']);
-        add_action('admin_init', [$this, 'register_settings']);
-        add_action('admin_enqueue_scripts', [$this, 'enqueue_assets']);
+        add_action('admin_menu', [$this, 'wpmesoche_add_menu_page']);
+        add_action('admin_init', [$this, 'wpmesoche_register_settings']);
+        add_action('admin_enqueue_scripts', [$this, 'wpmesoche_enqueue_admin_scripts']);
     }
 
-    public function add_menu_page()
+    public function wpmesoche_add_menu_page()
     {
         add_menu_page(
             __('Chat Floating Icons', 'wpmethods-social-chat-floating-icons'),
             __('Chat Floating Icons', 'wpmethods-social-chat-floating-icons'),
             'manage_options',
             'wpmethods-social-chat-floating-icons-settings',
-            [$this, 'settings_page'],
+            [$this, 'wpmesoche_settings_page'],
             'dashicons-format-chat'
         );
     }
 
-    public function enqueue_assets($hook)
+    public function wpmesoche_enqueue_admin_scripts($hook)
     {
         if ($hook !== 'toplevel_page_wpmethods-social-chat-floating-icons-settings') {
             return;
         }
         $min_suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
         wp_enqueue_style('wp-color-picker');
-        wp_enqueue_style('wpmethods-social-chat-floating-icons-admin', LC_WPMETHODS_URL . 'assets/css/admin'. $min_suffix . '.css', [], VERSION_WSCFI);
-        wp_enqueue_script('wpmethods-social-chat-floating-icons-admin', LC_WPMETHODS_URL . 'assets/js/admin'. $min_suffix . '.js', ['jquery', 'wp-color-picker'], VERSION_WSCFI, true);
+        wp_enqueue_style('wpmethods-social-chat-floating-icons-admin', WPMESOCHE_WPMETHODS_URL . 'assets/css/admin'. $min_suffix . '.css', [], WPMESOCHE_PLUGIN_VERSION);
+        wp_enqueue_script('wpmethods-social-chat-floating-icons-admin', WPMESOCHE_WPMETHODS_URL . 'assets/js/admin'. $min_suffix . '.js', ['jquery', 'wp-color-picker'], WPMESOCHE_PLUGIN_VERSION, true);
         
         // Enqueue FontAwesome for icons
-        wp_enqueue_style('fontawesome', LC_WPMETHODS_URL . 'assets/css/all.min.css', [], '6.7.2');
-        wp_enqueue_script('wpmethods-social-chat-floating-icons-sortable', LC_WPMETHODS_URL . 'assets/js/Sortable'. $min_suffix . '.js', ['jquery'], VERSION_WSCFI, true);
+        wp_enqueue_style('fontawesome', WPMESOCHE_WPMETHODS_URL . 'assets/css/all.min.css', [], '6.7.2');
+        wp_enqueue_script('wpmethods-social-chat-floating-icons-sortable', WPMESOCHE_WPMETHODS_URL . 'assets/js/Sortable.min.js', ['jquery'], '1.15.6', true);
     }
 
 
-    public function register_settings()
+    public function wpmesoche_register_settings()
     {
         register_setting('lc_wpmethods_settings_group', 'lc_wpmethods_settings', [
-            'sanitize_callback' => [$this, 'sanitize_settings']
+            'sanitize_callback' => [$this, 'wpmesoche_sanitize_settings']
         ]);
     }
 
-    private function sanitize_select_position($input) {
+    private function wpmesoche_sanitize_select_position($input) {
         // Sanitize the input
         $input = sanitize_text_field($input ?? '');
         
@@ -62,7 +62,7 @@ class Admin_Settings_Lcw{
     
    
 
-    public function sanitize_settings($settings)
+    public function wpmesoche_sanitize_settings($settings)
     {
         if (isset($settings['lc_wpmethods_links']) && is_array($settings['lc_wpmethods_links'])) {
             foreach ($settings['lc_wpmethods_links'] as &$link) {
@@ -84,7 +84,7 @@ class Admin_Settings_Lcw{
         $settings['height_width'] = sanitize_text_field($settings['height_width'] ?? '');
         $settings['hover_color'] = sanitize_hex_color($settings['hover_color'] ?? '');
         $settings['custom_text'] = sanitize_text_field($settings['custom_text'] ?? '');
-        $settings['position'] = $this->sanitize_select_position($settings['position'] ?? '');
+        $settings['position'] = $this->wpmesoche_sanitize_select_position($settings['position'] ?? '');
         $settings['right_offset'] = sanitize_text_field($settings['right_offset'] ?? '');
         $settings['left_offset'] = sanitize_text_field($settings['left_offset'] ?? '');
         $settings['bottom_offset'] = sanitize_text_field($settings['bottom_offset'] ?? '');
@@ -103,7 +103,7 @@ class Admin_Settings_Lcw{
         return $settings;
     }
 
-    public function settings_page()
+    public function wpmesoche_settings_page()
     {
         $options = get_option('lc_wpmethods_settings', []);
         $lc_wpmethods_links = $options['lc_wpmethods_links'] ?? [];

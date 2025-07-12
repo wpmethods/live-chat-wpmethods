@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Wpmethods Social Chat Floating Icons to Display WhatsApp, Messenger, Telegram, etc.
+ * Plugin Name: Wpmethods Social Chat Floating Icons
  * Description: Display live chat floating icons of any social media like WhatsApp, Messenger, Telegram, etc on your WordPress website.
  * Plugin URI: https://wpmethods.com/product/wpmethods-social-chat-floating-icons
  * Author: WP Methods
@@ -21,22 +21,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Define plugin path and url
-define('LC_WPMETHODS_PATH', plugin_dir_path(__FILE__));
-define('LC_WPMETHODS_URL', plugin_dir_url(__FILE__));
+define('WPMESOCHE_WPMETHODS_PATH', plugin_dir_path(__FILE__));
+define('WPMESOCHE_WPMETHODS_URL', plugin_dir_url(__FILE__));
 
-define('VERSION_WSCFI', '1.0.0');
+define('WPMESOCHE_PLUGIN_VERSION', '1.0.0');
 
 // Autoload Classes
-require_once LC_WPMETHODS_PATH . 'file_autoloader/autoload.php';
+require_once WPMESOCHE_WPMETHODS_PATH . 'file_autoloader/autoload.php';
 
 // Initialize
 add_action('plugins_loaded', function() {
     if (is_admin()) {
-        new LC_WPMethods\Admin_Settings_Lcw();
-        new LC_WPMethods\License_Lcw();
+        new WPMESOCHE\Wpmesoche_Admin_Settings();
+        new WPMESOCHE\Wpmesoche_License_Settings();
 
     } else {
-        new LC_WPMethods\Front_End();
+        new WPMESOCHE\Wpmesoche_Front_End();
     }
 });
 

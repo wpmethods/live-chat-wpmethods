@@ -1,26 +1,24 @@
 <?php
-namespace LC_WPMethods;
+namespace WPMESOCHE;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-class Front_End {
-
+class Wpmesoche_Front_End {
     public function __construct() {
-        add_action('wp_footer', [$this, 'render_chat_buttons']);
-        add_action('wp_enqueue_scripts', [$this, 'enqueue_assets']);
+        add_action('wp_footer', [$this, 'wpmesoche_render_chat_buttons']);
+        add_action('wp_enqueue_scripts', [$this, 'wpmesoche_enqueue_scripts']);
     }
 
-    public function enqueue_assets() {
+    public function wpmesoche_enqueue_scripts() {
         $min_suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-        $this->maybe_enqueue_fontawesome();
-        wp_enqueue_style('lc-wpmethods-css', LC_WPMETHODS_URL . 'assets/css/front-end'. $min_suffix . '.css', [], VERSION_WSCFI);
-        wp_enqueue_script('lc-wpmethods-js', LC_WPMETHODS_URL . 'assets/js/front-end'. $min_suffix . '.js', ['jquery'], VERSION_WSCFI, true);
-        //wp_enqueue_script('lc-wpmethods-button-js', LC_WPMETHODS_URL . 'assets/js/custom-button'. $min_suffix . '.js', ['jquery'], VERSION_WSCFI, true);
+        $this->wpmesoche_maybe_enqueue_fontawesome();
+        wp_enqueue_style('lc-wpmethods-css', WPMESOCHE_WPMETHODS_URL . 'assets/css/front-end'. $min_suffix . '.css', [], WPMESOCHE_PLUGIN_VERSION);
+        wp_enqueue_script('lc-wpmethods-js', WPMESOCHE_WPMETHODS_URL . 'assets/js/front-end'. $min_suffix . '.js', ['jquery'], WPMESOCHE_PLUGIN_VERSION, true);
     }
 
-    public function render_chat_buttons()
+    public function wpmesoche_render_chat_buttons()
     {// Load settings
         $options = get_option('lc_wpmethods_settings');
 
@@ -80,7 +78,7 @@ class Front_End {
                     $is_product_page = function_exists('is_product') && is_product();
                     $track_product = !empty($options['track_woo_product']) ? $options['track_woo_product'] : '0';
 
-                    $base_message = $is_product_page ? $this->lc_wpmethods_get_product_message() : '';
+                    $base_message = $is_product_page ? $this->wpmesoche_get_product_message() : '';
                     if (!empty($custom_text)) {
                         $base_message = $custom_text . "\n" . $base_message;
                     }
@@ -177,7 +175,7 @@ class Front_End {
 
 
 
-    private function maybe_enqueue_fontawesome() {
+    private function wpmesoche_maybe_enqueue_fontawesome() {
         global $wp_styles;
         $already_loaded = false;
 
@@ -191,13 +189,13 @@ class Front_End {
         }
 
         if (!$already_loaded) {
-            wp_enqueue_style('fontawesome', LC_WPMETHODS_URL . 'assets/css/all.min.css', [], '6.7.2');
+            wp_enqueue_style('fontawesome', WPMESOCHE_WPMETHODS_URL . 'assets/css/all.min.css', [], '6.7.2');
         }
     }
 
 
 
-    private function lc_wpmethods_get_product_message() {
+    private function wpmesoche_get_product_message() {
         if (function_exists('is_woocommerce') && is_singular('product')) {
             $options = get_option('lc_wpmethods_settings');
             $track_product = !empty($options['track_woo_product']) ? $options['track_woo_product'] : '0';

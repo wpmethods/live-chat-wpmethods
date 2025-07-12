@@ -3,8 +3,8 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
 spl_autoload_register(function($class) {
-    $prefix = 'LC_WPMethods\\';
-    $base_dir = LC_WPMETHODS_PATH . 'includes/';
+    $prefix = 'WPMESOCHE\\';
+    $base_dir = WPMESOCHE_WPMETHODS_PATH . 'includes/';
 
     $len = strlen($prefix);
     if (strncmp($prefix, $class, $len) !== 0) {
