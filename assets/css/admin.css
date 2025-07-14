@@ -1,27 +1,27 @@
-.lc-tabs {
+.wpmesoch-admin-tabs {
     margin-bottom: 20px;
 }
-.lc-tab-button {
+.wpmesoch-admin-tab-button {
     padding: 10px 20px;
     background: #f1f1f1;
     border: none;
     cursor: pointer;
     margin-right: 5px;
 }
-.lc-tab-button.active {
+.wpmesoch-admin-tab-button.active {
     background: #0073aa;
     color: #fff;
 }
-.lc-tab-content {
+.wpmesoch-admin-tab-content {
     display: none;
 }
-.lc-tab-content.active {
+.wpmesoch-admin-tab-content.active {
     display: block;
 }
 
 
 
-#cl-wpmethods-repeater-fields {
+#wpmesoch-admin-repeater-fields {
     margin-bottom: 20px;
 }
 
@@ -29,7 +29,7 @@ label.cl-label-wpm {
     margin-bottom: 5px;
 }
 
-.cl-wpmethods-field-group {
+.wpmesoch-admin-field-group {
     background: #f9f9f9;
     border: 1px solid #ddd;
     padding: 15px;
@@ -41,7 +41,7 @@ label.cl-label-wpm {
     gap: 10px;
 }
 
-.cl-wpmethods-preview-icon {
+.wpmesoch-admin-preview-icon {
     width: 40px;
     height: 40px;
     background: #eee;
@@ -52,17 +52,17 @@ label.cl-label-wpm {
     border-radius: 50%;
 }
 
-.cl-wpmethods-field-group input {
+.wpmesoch-admin-field-group input {
     padding: 2px 10px;
     width: 100%;
 }
 
-.flex-cl-wpmethods{
+.flex-wpmesoch-admin{
     display: flex;
     flex-direction: column;
 }
 
-.cl-wpmethods-remove-field {
+.wpmesoch-admin-remove-field {
     background: #e53935;
     color: #fff;
     border: none;
@@ -71,7 +71,7 @@ label.cl-label-wpm {
     border-radius: 4px;
 }
 
-#cl-wpmethods-add-field {
+#wpmesoch-admin-add-field {
     background: #43a047;
     color: white;
     border: none;
@@ -87,14 +87,14 @@ label.cl-label-wpm {
 
 @media (max-width: 720px) {
 
-    .cl-wpmethods-preview-icon {
+    .wpmesoch-admin-preview-icon {
         width: 80px;
         margin: 0px auto;
         height: 80px;
         font-size: 60px;
         border-radius: 10%;
     }
-    .cl-wpmethods-field-group {
+    .wpmesoch-admin-field-group {
         display: grid;
         grid-template-columns: 1fr 1fr;
         /* Two columns */

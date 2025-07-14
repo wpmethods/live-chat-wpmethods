@@ -1,4 +1,4 @@
-.lc-wpmethods-chat-container {
+.wpmesoch-chat-container {
     position: fixed;
     bottom: 20px;
     right: 20px;
@@ -8,7 +8,7 @@
     align-items: flex-end;
 }
 
-.lc-wpmethods-chat-toggle {
+.wpmesoch-chat-toggle {
     width: 50px;
     height: 50px;
     border-radius: 50%;
@@ -22,11 +22,11 @@
     outline: none;
 }
 
-.lc-wpmethods-chat-toggle i {
+.wpmesoch-chat-toggle i {
     pointer-events: none;
 }
 
-.lc-wpmethods-chat-options {
+.wpmesoch-chat-options {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
@@ -37,13 +37,13 @@
     transform: translateY(20px);
 }
 
-.lc-wpmethods-chat-container.lc-wpmethods-open .lc-wpmethods-chat-options {
+.wpmesoch-chat-container.wpmesoch-open .wpmesoch-chat-options {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
 }
 
-[type=button].lc-wpmethods-chat-btn {
+[type=button].wpmesoch-chat-btn {
     border-radius: 50% !important;
     display: flex !important;
     align-items: center;
@@ -57,15 +57,15 @@
     cursor: pointer;
 }
 
-[type=button].lc-wpmethods-chat-btn:hover {
+[type=button].wpmesoch-chat-btn:hover {
     transform: scale(1.1); 
 }
 
-.lc-wpmethods-pulse {
-    animation: lc-wpmethods-pulse 2s infinite;
+.wpmesoch-pulse {
+    animation: wpmesoch-pulse 2s infinite;
 }
 
-.lc-wpmethods-chat-container:hover .lc-wpmethods-pulse {
+.wpmesoch-chat-container:hover .wpmesoch-pulse {
     animation: none;
 }
 
@@ -112,18 +112,18 @@
 
 
 @media (max-width: 480px) {
-    .lc-wpmethods-chat-toggle {
+    .wpmesoch-chat-toggle {
         width: 40px;
         height: 40px;
         font-size: 24px;
     }
 
-    .lc-wpmethods-chat-btn {
+    .wpmesoch-chat-btn {
         width: 40px;
         height: 40px;
     }
 
-    .lc-wpmethods-chat-btn i {
+    .wpmesoch-chat-btn i {
         font-size: 20px;
     }
 

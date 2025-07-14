@@ -1,23 +1,23 @@
 <?php
-namespace WPMESOCHE;
+namespace WPMESOCH;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-class Wpmesoche_Front_End {
+class Wpmesoch_Front_End {
     public function __construct() {
-        add_action('wp_footer', [$this, 'wpmesoche_render_chat_buttons']);
-        add_action('wp_enqueue_scripts', [$this, 'wpmesoche_enqueue_scripts']);
+        add_action('wp_footer', [$this, 'wpmesoch_render_chat_buttons']);
+        add_action('wp_enqueue_scripts', [$this, 'wpmesoch_enqueue_scripts']);
     }
 
-    public function wpmesoche_enqueue_scripts() {
+    public function wpmesoch_enqueue_scripts() {
         $min_suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-        $this->wpmesoche_maybe_enqueue_fontawesome();
-        wp_enqueue_style('lc-wpmethods-css', WPMESOCHE_WPMETHODS_URL . 'assets/css/front-end'. $min_suffix . '.css', [], WPMESOCHE_PLUGIN_VERSION);
+        $this->wpmesoch_maybe_enqueue_fontawesome();
+        wp_enqueue_style('wpmesoch-css', WPMESOCH_WPMETHODS_URL . 'assets/css/front-end'. $min_suffix . '.css', [], WPMESOCH_PLUGIN_VERSION);
         
         //Enqueue the inline css
-        $options = get_option('lc_wpmethods_settings');
+        $options = get_option('wpmesoch_settings');
 
         $toggle_color = $options['toggle_bg_color'] ? $options['toggle_bg_color'] : '#00DA62';
         $toggle_g_color = $options['toggle_gbg_color'] ? $options['toggle_gbg_color'] : '';
@@ -40,31 +40,31 @@ class Wpmesoche_Front_End {
         
 
         // Inline CSS for the chat button
-        $wpmesoche_inline_css = "
-            .lc-wpmethods-chat-toggle,
-            [type=button].lc-wpmethods-chat-btn {
+        $wpmesoch_inline_css = "
+            .wpmesoch-chat-toggle,
+            [type=button].wpmesoch-chat-btn {
                 height: {$height_width}px;
                 width: {$height_width}px;
             }
         
-            .lc-wpmethods-chat-container {
+            .wpmesoch-chat-container {
                 align-items: " . ($position === 'left' ? 'flex-start' : 'flex-end') . ";
                 bottom: {$bottom_offset};
                 {$side_offset_style}
                 z-index: 9999;
             }
         
-            .lc-wpmethods-chat-toggle {
+            .wpmesoch-chat-toggle {
                 color: {$icon_color};
                 background: " . ($toggle_g_color ? "linear-gradient(120deg, {$toggle_color} 50%, {$toggle_g_color} 100%)" : $toggle_color) . ";
             }
         
-            .lc-wpmethods-chat-toggle:hover {
+            .wpmesoch-chat-toggle:hover {
                 background: {$hover_color};
             }
         
-            .lc-wpmethods-chat-btn i,
-            .lc-wpmethods-chat-toggle i {
+            .wpmesoch-chat-btn i,
+            .wpmesoch-chat-toggle i {
                 pointer-events: none;
                 font-size: {$icon_size}px;
             }
@@ -81,7 +81,7 @@ class Wpmesoche_Front_End {
                     : "right: 65%; margin-right: 8px; padding-right: 25px;") . "
             }
         
-            @keyframes lc-wpmethods-pulse {
+            @keyframes wpmesoch-pulse {
                 0% {
                     box-shadow: 0 0 0 0 {$pulse_animation_border_color};
                     transform: scale(1);
@@ -100,17 +100,17 @@ class Wpmesoche_Front_End {
         ";
         
 
-        wp_add_inline_style('lc-wpmethods-css', $wpmesoche_inline_css);
+        wp_add_inline_style('wpmesoch-css', $wpmesoch_inline_css);
 
-        wp_enqueue_script('lc-wpmethods-js', WPMESOCHE_WPMETHODS_URL . 'assets/js/front-end'. $min_suffix . '.js', ['jquery'], WPMESOCHE_PLUGIN_VERSION, true);
+        wp_enqueue_script('wpmesoch-js', WPMESOCH_WPMETHODS_URL . 'assets/js/front-end'. $min_suffix . '.js', ['jquery'], WPMESOCH_PLUGIN_VERSION, true);
     }
 
-    public function wpmesoche_render_chat_buttons()
+    public function wpmesoch_render_chat_buttons()
     {// Load settings
-        $options = get_option('lc_wpmethods_settings');
+        $options = get_option('wpmesoch_settings');
 
         // Repeater field should be an array of arrays
-        $lc_wpmethods_links = $options['lc_wpmethods_links'] ?? [[
+        $wpmesoch_links = $options['wpmesoch_links'] ?? [[
             'url' => 'https://wa.me/88017900000',
             'icon' => 'fab fa-whatsapp',
             'label' => '',
@@ -123,14 +123,14 @@ class Wpmesoche_Front_End {
 
         $limit   = apply_filters('wpmethods_social_chat_link_limit', 2);
 
-        if (empty($lc_wpmethods_links) || !is_array($lc_wpmethods_links)) {
+        if (empty($wpmesoch_links) || !is_array($wpmesoch_links)) {
             return; // Nothing to render
         }
         ?>
 
-        <div class="lc-wpmethods-chat-container" id="lcWpmethodsChatContainer">
-            <div class="lc-wpmethods-chat-options" id="chatOptions">
-                <?php foreach (array_slice($lc_wpmethods_links, 0, $limit) as $link) : 
+        <div class="wpmesoch-chat-container" id="lcWpmethodsChatContainer">
+            <div class="wpmesoch-chat-options" id="chatOptions">
+                <?php foreach (array_slice($wpmesoch_links, 0, $limit) as $link) : 
                     $url = !empty($link['url']) ? $link['url'] : 'https://wa.me/your-whatsapp-number';
                     $icon_class = !empty($link['icon']) ? $link['icon'] : 'fab fa-whatsapp';
                     $label = !empty($link['label']) ? $link['label'] : '';
@@ -146,7 +146,7 @@ class Wpmesoche_Front_End {
                     $is_product_page = function_exists('is_product') && is_product();
                     $track_product = !empty($options['track_woo_product']) ? $options['track_woo_product'] : '0';
 
-                    $base_message = $is_product_page ? $this->wpmesoche_get_product_message() : '';
+                    $base_message = $is_product_page ? $this->wpmesoch_get_product_message() : '';
                     if (!empty($custom_text)) {
                         $base_message = $custom_text . "\n" . $base_message;
                     }
@@ -158,7 +158,7 @@ class Wpmesoche_Front_End {
                         <div class="label-sfiw" style="background: <?php echo esc_attr($bg_color); ?>"><?php echo esc_html($label); ?></div>
                         <?php }?>
                         <button type="button"
-                            class="lc-wpmethods-chat-btn <?php echo sanitize_html_class(strtolower($label)); ?>"
+                            class="wpmesoch-chat-btn <?php echo sanitize_html_class(strtolower($label)); ?>"
                             data-url="<?php echo esc_url($social_link); ?>" 
                             data-base-message="<?php echo esc_attr($base_message); ?>"
                             data-custom-text="<?php echo esc_attr($custom_text); ?>"
@@ -173,7 +173,7 @@ class Wpmesoche_Front_End {
                 <?php endforeach; ?>
             </div>
          
-            <div class="lc-wpmethods-chat-toggle lc-wpmethods-pulse" id="lcWpmethodsChatToggle">
+            <div class="wpmesoch-chat-toggle wpmesoch-pulse" id="lcWpmethodsChatToggle">
                 <i class="<?php echo esc_attr($toggle_icon_class); ?>" data-toggle-icon="<?php echo esc_attr($toggle_icon_class); ?>" id="lcWpmethodsChatIcon"></i>
             </div>
             
@@ -184,7 +184,7 @@ class Wpmesoche_Front_End {
 
 
 
-    private function wpmesoche_maybe_enqueue_fontawesome() {
+    private function wpmesoch_maybe_enqueue_fontawesome() {
         global $wp_styles;
         $already_loaded = false;
 
@@ -198,15 +198,15 @@ class Wpmesoche_Front_End {
         }
 
         if (!$already_loaded) {
-            wp_enqueue_style('fontawesome', WPMESOCHE_WPMETHODS_URL . 'assets/css/all.min.css', [], '6.7.2');
+            wp_enqueue_style('fontawesome', WPMESOCH_WPMETHODS_URL . 'assets/css/all.min.css', [], '6.7.2');
         }
     }
 
 
 
-    private function wpmesoche_get_product_message() {
+    private function wpmesoch_get_product_message() {
         if (function_exists('is_woocommerce') && is_singular('product')) {
-            $options = get_option('lc_wpmethods_settings');
+            $options = get_option('wpmesoch_settings');
             $track_product = !empty($options['track_woo_product']) ? $options['track_woo_product'] : '0';
 
             if ($track_product == '0') {

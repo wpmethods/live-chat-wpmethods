@@ -8,7 +8,7 @@ const lcWpmethodsUpdateToggleIcon = (isOpen) => {
 };
 
 lcWpmethodsChatToggle.addEventListener("click", () => {
-  const isOpen = lcWpmethodsChatContainer.classList.toggle("lc-wpmethods-open");
+  const isOpen = lcWpmethodsChatContainer.classList.toggle("wpmesoch-open");
   lcWpmethodsChatToggle.setAttribute("aria-expanded", isOpen);
   lcWpmethodsUpdateToggleIcon(isOpen);
 });
@@ -22,7 +22,7 @@ lcWpmethodsChatToggle.addEventListener("keydown", (e) => {
 
 document.addEventListener("click", (e) => {
   if (!lcWpmethodsChatContainer.contains(e.target)) {
-    lcWpmethodsChatContainer.classList.remove("lc-wpmethods-open");
+    lcWpmethodsChatContainer.classList.remove("wpmesoch-open");
     lcWpmethodsChatToggle.setAttribute("aria-expanded", "false");
     lcWpmethodsUpdateToggleIcon(false);
   }
@@ -30,7 +30,7 @@ document.addEventListener("click", (e) => {
 
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") {
-    lcWpmethodsChatContainer.classList.remove("lc-wpmethods-open");
+    lcWpmethodsChatContainer.classList.remove("wpmesoch-open");
     lcWpmethodsChatToggle.setAttribute("aria-expanded", "false");
     lcWpmethodsUpdateToggleIcon(false);
   }
@@ -39,7 +39,7 @@ document.addEventListener("keydown", (e) => {
 
 
 jQuery(document).ready(function($) {
-  $('.lc-wpmethods-chat-btn').on('click', function(e) {
+  $('.wpmesoch-chat-btn').on('click', function(e) {
       e.preventDefault();
 
       const baseUrl = $(this).data('url');

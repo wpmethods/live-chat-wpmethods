@@ -1,11 +1,11 @@
 jQuery(document).ready(function($) {
     $('.color-field').wpColorPicker();
 
-    $('.lc-tab-button').click(function() {
+    $('.wpmesoch-admin-tab-button').click(function() {
         var tab_id = $(this).data('tab');
 
-        $('.lc-tab-button').removeClass('active');
-        $('.lc-tab-content').removeClass('active');
+        $('.wpmesoch-admin-tab-button').removeClass('active');
+        $('.wpmesoch-admin-tab-content').removeClass('active');
 
         $(this).addClass('active');
         $('#tab-' + tab_id).addClass('active');
@@ -13,26 +13,26 @@ jQuery(document).ready(function($) {
 
     $('.color-field').on('change', function() {
         let color = $(this).val();
-        $('#lc-live-preview').css('background', color);
+        $('#wpmesoch-admin-live-preview').css('background', color);
     });
 });
 
 
 // Initialize the repeater fields for adding social chat links
 document.addEventListener("DOMContentLoaded", function () {
-    const addButton = document.getElementById("cl-wpmethods-add-field");
-    const container = document.getElementById("cl-wpmethods-repeater-fields");
+    const addButton = document.getElementById("wpmesoch-admin-add-field");
+    const container = document.getElementById("wpmesoch-admin-repeater-fields");
     
 
-    let counter = wpmesoche_data.counter || 0;
-    let limit_links = wpmesoche_data.limit || 2;
+    let counter = wpmesoch_data.counter || 0;
+    let limit_links = wpmesoch_data.limit || 2;
 
     if (limit_links && counter < limit_links) {
         addButton.style.display = 'inline-block';
     }
 
     addButton?.addEventListener("click", function () {
-        const totalFields = container.querySelectorAll(".cl-wpmethods-field-group").length;
+        const totalFields = container.querySelectorAll(".wpmesoch-admin-field-group").length;
 
         if (limit_links && totalFields >= limit_links) {
             addButton.style.display = 'none';
@@ -40,60 +40,60 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         const fieldGroup = document.createElement("div");
-        fieldGroup.className = "cl-wpmethods-field-group";
+        fieldGroup.className = "wpmesoch-admin-field-group";
         fieldGroup.style.marginBottom = "15px";
 
         fieldGroup.innerHTML = `
-            <div class="cl-wpmethods-preview-icon" style="margin-bottom: 8px;">
+            <div class="wpmesoch-admin-preview-icon" style="margin-bottom: 8px;">
                 <i class="fab fa-whatsapp"></i>
             </div>
 
-            <div class="flex-cl-wpmethods">
+            <div class="flex-wpmesoch-admin">
                 <label class="cl-label-wpm" for="cl-color-${counter}">Icon Color</label>
-                <input type="text" id="cl-color-${counter}" name="lc_wpmethods_settings[lc_wpmethods_links][${counter}][color]" class="color-picker" placeholder="Pick Icon Color" />
+                <input type="text" id="cl-color-${counter}" name="wpmesoch_settings[wpmesoch_links][${counter}][color]" class="color-picker" placeholder="Pick Icon Color" />
             </div>
 
-            <div class="flex-cl-wpmethods">
+            <div class="flex-wpmesoch-admin">
                 <label class="cl-label-wpm" for="cl-url-${counter}">Enter URL</label>
-                <input type="text" id="cl-url-${counter}" name="lc_wpmethods_settings[lc_wpmethods_links][${counter}][url]" placeholder="URL (Ex: https://wa.me/88017900000)" />
+                <input type="text" id="cl-url-${counter}" name="wpmesoch_settings[wpmesoch_links][${counter}][url]" placeholder="URL (Ex: https://wa.me/88017900000)" />
             </div>
 
-            <div class="flex-cl-wpmethods">
+            <div class="flex-wpmesoch-admin">
                 <label class="cl-label-wpm" for="cl-class-${counter}">Enter Icon Class</label>
-                <input type="text" id="cl-class-${counter}" name="lc_wpmethods_settings[lc_wpmethods_links][${counter}][icon]" class="icon-input" placeholder="Enter Icon Class (e.g. fab fa-facebook)" />
+                <input type="text" id="cl-class-${counter}" name="wpmesoch_settings[wpmesoch_links][${counter}][icon]" class="icon-input" placeholder="Enter Icon Class (e.g. fab fa-facebook)" />
             </div>
 
-            <div class="flex-cl-wpmethods">
+            <div class="flex-wpmesoch-admin">
                 <label class="cl-label-wpm" for="cl-label-${counter}">Enter Label</label>
-                <input type="text" id="cl-label-${counter}" name="lc_wpmethods_settings[lc_wpmethods_links][${counter}][label]" placeholder="Enter Label (Ex: Whatsapp)" />
+                <input type="text" id="cl-label-${counter}" name="wpmesoch_settings[wpmesoch_links][${counter}][label]" placeholder="Enter Label (Ex: Whatsapp)" />
             </div>
 
-            <div class="flex-cl-wpmethods">
+            <div class="flex-wpmesoch-admin">
                 <label class="cl-label-wpm" for="cl-bgcolor-${counter}">Background Color</label>
-                <input type="text" id="cl-bgcolor-${counter}" name="lc_wpmethods_settings[lc_wpmethods_links][${counter}][bg_color]" class="color-picker" placeholder="Pick Background Color" />
+                <input type="text" id="cl-bgcolor-${counter}" name="wpmesoch_settings[wpmesoch_links][${counter}][bg_color]" class="color-picker" placeholder="Pick Background Color" />
             </div>
 
-            <div class="flex-cl-wpmethods">
+            <div class="flex-wpmesoch-admin">
                 <label class="cl-label-wpm" for="cl-sbgcolor-${counter}">Gradient Color</label>
-                <input type="text" id="cl-sbgcolor-${counter}" name="lc_wpmethods_settings[lc_wpmethods_links][${counter}][s_bg_color]" class="color-picker" placeholder="Gradient Color" />
+                <input type="text" id="cl-sbgcolor-${counter}" name="wpmesoch_settings[wpmesoch_links][${counter}][s_bg_color]" class="color-picker" placeholder="Gradient Color" />
             </div>
 
-            <button type="button" class="cl-wpmethods-remove-field button" style="margin-top: 10px;">Remove</button>
+            <button type="button" class="wpmesoch-admin-remove-field button" style="margin-top: 10px;">Remove</button>
         `;
 
         container.appendChild(fieldGroup);
         initializeColorPickers();
         counter++;
 
-        if (limit_links && container.querySelectorAll(".cl-wpmethods-field-group").length >= limit_links) {
+        if (limit_links && container.querySelectorAll(".wpmesoch-admin-field-group").length >= limit_links) {
             addButton.style.display = 'none';
         }
     });
 
     container.addEventListener("click", function (e) {
-        if (e.target.classList.contains("cl-wpmethods-remove-field")) {
-            e.target.closest(".cl-wpmethods-field-group").remove();
-            if (limit_links && container.querySelectorAll(".cl-wpmethods-field-group").length < limit_links) {
+        if (e.target.classList.contains("wpmesoch-admin-remove-field")) {
+            e.target.closest(".wpmesoch-admin-field-group").remove();
+            if (limit_links && container.querySelectorAll(".wpmesoch-admin-field-group").length < limit_links) {
                 addButton.style.display = '';
             }
         }
@@ -102,7 +102,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.addEventListener("input", function (e) {
         if (e.target.classList.contains("icon-input")) {
             const iconClass = e.target.value.trim() || 'fab fa-whatsapp';
-            const preview = e.target.closest('.cl-wpmethods-field-group').querySelector('.cl-wpmethods-preview-icon i');
+            const preview = e.target.closest('.wpmesoch-admin-field-group').querySelector('.wpmesoch-admin-preview-icon i');
             preview.className = iconClass;
         }
     });

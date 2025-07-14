@@ -20,20 +20,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Define plugin path and url
-define('WPMESOCHE_WPMETHODS_PATH', plugin_dir_path(__FILE__));
-define('WPMESOCHE_WPMETHODS_URL', plugin_dir_url(__FILE__));
+define('WPMESOCH_WPMETHODS_PATH', plugin_dir_path(__FILE__));
+define('WPMESOCH_WPMETHODS_URL', plugin_dir_url(__FILE__));
 
-define('WPMESOCHE_PLUGIN_VERSION', '1.0.0');
+define('WPMESOCH_PLUGIN_VERSION', '1.0.0');
 
 // Autoload Classes
-require_once WPMESOCHE_WPMETHODS_PATH . 'file_autoloader/autoload.php';
+require_once WPMESOCH_WPMETHODS_PATH . 'file_autoloader/autoload.php';
 
 // Initialize
 add_action('plugins_loaded', function() {
     if (is_admin()) {
-        new WPMESOCHE\Wpmesoche_Admin_Settings();
+        new WPMESOCH\Wpmesoch_Admin_Settings();
     } else {
-        new WPMESOCHE\Wpmesoche_Front_End();
+        new WPMESOCH\Wpmesoch_Front_End();
     }
 });
 
