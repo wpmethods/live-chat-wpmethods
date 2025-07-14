@@ -50,6 +50,10 @@ Fully translatable for global use.
 🧩 Lightweight and Fast
 No bloat – only the features you need to enhance user communication.
 
+🔓 **Free Version Limitation**:  
+All features are available in free version. Only link number is limited (max: 2).  
+👉 Unlock unlimited links in the [Pro version](https://wpmethods.com/product/social-chat-floating-icons-wordpress-plugin).
+
 
 
 == Installation ==

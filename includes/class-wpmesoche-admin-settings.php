@@ -6,7 +6,6 @@ if (!defined('ABSPATH')) {
 }
 
 class Wpmesoche_Admin_Settings{
-    private $option_key      = 'wpmlc_license_key';
     public function __construct()
     {
         add_action('admin_menu', [$this, 'wpmesoche_add_menu_page']);
@@ -26,20 +25,33 @@ class Wpmesoche_Admin_Settings{
         );
     }
 
-    public function wpmesoche_enqueue_admin_scripts($hook)
-    {
+    public function wpmesoche_enqueue_admin_scripts($hook) {
         if ($hook !== 'toplevel_page_wpmethods-social-chat-floating-icons-settings') {
             return;
         }
-        $min_suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+    
+        $min_suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
+    
         wp_enqueue_style('wp-color-picker');
-        wp_enqueue_style('wpmethods-social-chat-floating-icons-admin', WPMESOCHE_WPMETHODS_URL . 'assets/css/admin'. $min_suffix . '.css', [], WPMESOCHE_PLUGIN_VERSION);
-        wp_enqueue_script('wpmethods-social-chat-floating-icons-admin', WPMESOCHE_WPMETHODS_URL . 'assets/js/admin'. $min_suffix . '.js', ['jquery', 'wp-color-picker'], WPMESOCHE_PLUGIN_VERSION, true);
-        
-        // Enqueue FontAwesome for icons
+        wp_enqueue_style('wpmethods-social-chat-floating-icons-admin', WPMESOCHE_WPMETHODS_URL . 'assets/css/admin' . $min_suffix . '.css', [], WPMESOCHE_PLUGIN_VERSION);
+    
+        // Enqueue Admin JS 
+        wp_enqueue_script('wpmethods-social-chat-floating-icons-admin', WPMESOCHE_WPMETHODS_URL . 'assets/js/admin' . $min_suffix . '.js', ['jquery', 'wp-color-picker'], WPMESOCHE_PLUGIN_VERSION, true);
+    
+        // Now localize the script (AFTER enqueue)
+        $links = get_option('lc_wpmethods_settings');
+        $existing_links = !empty($links['lc_wpmethods_links']) ? count($links['lc_wpmethods_links']) : 0;
+    
+        wp_localize_script('wpmethods-social-chat-floating-icons-admin', 'wpmesoche_data', [
+            'counter' => $existing_links,
+            'limit'   => apply_filters('wpmethods_social_chat_link_limit', 2),
+        ]);
+    
+        // FontAwesome and Sortable
         wp_enqueue_style('fontawesome', WPMESOCHE_WPMETHODS_URL . 'assets/css/all.min.css', [], '6.7.2');
         wp_enqueue_script('wpmethods-social-chat-floating-icons-sortable', WPMESOCHE_WPMETHODS_URL . 'assets/js/Sortable.min.js', ['jquery'], '1.15.6', true);
     }
+    
 
 
     public function wpmesoche_register_settings()
@@ -121,6 +133,8 @@ class Wpmesoche_Admin_Settings{
             if (isset($_GET['settings-updated']) && $_GET['settings-updated'] == true) {
                 echo '<div class="notice notice-success is-dismissible"><p>Changes saved!</p></div>';
             } ?>
+
+            <?php do_action('wpmethods_social_chat_pro_notice'); ?>
 
             <div class="lc-tabs">
                 <button class="lc-tab-button active" data-tab="general"><?php esc_html_e('Icons & Links', 'wpmethods-social-chat-floating-icons'); ?></button>
@@ -419,131 +433,13 @@ class Wpmesoche_Admin_Settings{
                     </p>
 
                     <p>
-                        You can buy the license to get full access of this plugin <a href="https://wpmethods.com/social-floating-icon" target="_blank">Click here</a>
+                        You can buy the license to get full access of this plugin <a href="https://wpmethods.com/product/social-chat-floating-icons-wordpress-plugin" target="_blank">Click here</a>
                     </p>
                 </div>
 
 
                 <?php submit_button(); ?>
             </form>
-
-
-
-            <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                const addButton = document.getElementById("cl-wpmethods-add-field");
-                const container = document.getElementById("cl-wpmethods-repeater-fields");
-
-                // Track index for input name attributes
-                let counter = <?php echo (int) count($lc_wpmethods_links); ?>;
-
-                // Set link limit
-                let limit_links = <?php echo (int) apply_filters('wpmethods_social_chat_link_limit', 2); ?>;
-
-                if (limit_links && counter < limit_links) {
-                    addButton.style.display = 'inline-block'; // or 'block' if you prefer
-                }
-
-                // Add New Field
-                addButton?.addEventListener("click", function () {
-                    const totalFields = container.querySelectorAll(".cl-wpmethods-field-group").length;
-
-                    // Check limit
-                    if (limit_links && totalFields >= limit_links) {
-                        addButton.style.display = 'none';
-                        return;
-                    }
-
-                    const fieldGroup = document.createElement("div");
-                    fieldGroup.className = "cl-wpmethods-field-group";
-                    fieldGroup.style.marginBottom = "15px";
-
-                    fieldGroup.innerHTML = `
-                        <div class="cl-wpmethods-preview-icon" style="margin-bottom: 8px;">
-                            <i class="fab fa-whatsapp"></i>
-                        </div>
-
-                        <div class="flex-cl-wpmethods">
-                            <label class="cl-label-wpm" for="cl-color-${counter}">Icon Color</label>
-                            <input type="text" id="cl-color-${counter}" name="lc_wpmethods_settings[lc_wpmethods_links][${counter}][color]" class="color-picker" placeholder="Pick Icon Color" />
-                        </div>
-
-                        <div class="flex-cl-wpmethods">
-                            <label class="cl-label-wpm" for="cl-url-${counter}">Enter URL</label>
-                            <input type="text" id="cl-url-${counter}" name="lc_wpmethods_settings[lc_wpmethods_links][${counter}][url]" placeholder="URL (Ex: https://wa.me/88017900000)" />
-                        </div>
-
-                        <div class="flex-cl-wpmethods">
-                            <label class="cl-label-wpm" for="cl-class-${counter}">Enter Icon Class</label>
-                            <input type="text" id="cl-class-${counter}" name="lc_wpmethods_settings[lc_wpmethods_links][${counter}][icon]" class="icon-input" placeholder="Enter Icon Class (e.g. fab fa-facebook)" />
-                        </div>
-
-                        <div class="flex-cl-wpmethods">
-                            <label class="cl-label-wpm" for="cl-label-${counter}">Enter Label</label>
-                            <input type="text" id="cl-label-${counter}" name="lc_wpmethods_settings[lc_wpmethods_links][${counter}][label]" placeholder="Enter Label (Ex: Whatsapp)" />
-                        </div>
-
-                        <div class="flex-cl-wpmethods">
-                            <label class="cl-label-wpm" for="cl-bgcolor-${counter}">Background Color</label>
-                            <input type="text" id="cl-bgcolor-${counter}" name="lc_wpmethods_settings[lc_wpmethods_links][${counter}][bg_color]" class="color-picker" placeholder="Pick Background Color" />
-                        </div>
-
-                        <div class="flex-cl-wpmethods">
-                            <label class="cl-label-wpm" for="cl-sbgcolor-${counter}">Gradient Color</label>
-                            <input type="text" id="cl-sbgcolor-${counter}" name="lc_wpmethods_settings[lc_wpmethods_links][${counter}][s_bg_color]" class="color-picker" placeholder="Gradient Color" />
-                        </div>
-
-                        <button type="button" class="cl-wpmethods-remove-field button" style="margin-top: 10px;"><?php esc_html_e('Remove', 'wpmethods-social-chat-floating-icons'); ?></button>
-                    `;
-
-                    container.appendChild(fieldGroup);
-                    initializeColorPickers();
-                    counter++; // only used for naming input names
-
-                    // Check again after adding
-                    if (limit_links && container.querySelectorAll(".cl-wpmethods-field-group").length >= limit_links) {
-                        addButton.style.display = 'none';
-                    }
-                });
-
-                // Remove field
-                container.addEventListener("click", function (e) {
-                    if (e.target.classList.contains("cl-wpmethods-remove-field")) {
-                        e.target.closest(".cl-wpmethods-field-group").remove();
-
-                        // After removing, check if below limit to re-show button
-                        if (limit_links && container.querySelectorAll(".cl-wpmethods-field-group").length < limit_links) {
-                            addButton.style.display = '';
-                        }
-                    }
-                });
-
-                // Live preview for icon
-                document.addEventListener("input", function (e) {
-                    if (e.target.classList.contains("icon-input")) {
-                        const iconClass = e.target.value.trim() || 'fab fa-whatsapp';
-                        const preview = e.target.closest('.cl-wpmethods-field-group').querySelector('.cl-wpmethods-preview-icon i');
-                        preview.className = iconClass;
-                    }
-                });
-
-                // Initialize Sortable
-                new Sortable(container, {
-                    animation: 150,
-                    ghostClass: 'sortable-ghost'
-                });
-
-                // Initialize Color Pickers (WordPress)
-                function initializeColorPickers() {
-                    jQuery('.color-picker').wpColorPicker();
-                }
-
-                jQuery(document).ready(function () {
-                    initializeColorPickers();
-                });
-            });
-
-            </script>
 
         </div>
         <?php

@@ -15,6 +15,93 @@ class Wpmesoche_Front_End {
         $min_suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
         $this->wpmesoche_maybe_enqueue_fontawesome();
         wp_enqueue_style('lc-wpmethods-css', WPMESOCHE_WPMETHODS_URL . 'assets/css/front-end'. $min_suffix . '.css', [], WPMESOCHE_PLUGIN_VERSION);
+        
+        //Enqueue the inline css
+        $options = get_option('lc_wpmethods_settings');
+
+        $toggle_color = $options['toggle_bg_color'] ? $options['toggle_bg_color'] : '#00DA62';
+        $toggle_g_color = $options['toggle_gbg_color'] ? $options['toggle_gbg_color'] : '';
+        $icon_color = $options['icon_color'] ? $options['icon_color'] : '#FFFFFF';
+        $icon_size = $options['icon_size'] ? $options['icon_size'] : '30';
+        $height_width = $options['height_width'] ? $options['height_width'] : '50';
+        $hover_color = $options['hover_color'] ?  $options['hover_color'] : '#128C7E';
+        $pulse_animation_border_color = $options['pulse_animation_border_color'] ?  $options['pulse_animation_border_color'] : '#00DA62';
+
+        // Position settings
+        $position = $options['position'] ?? 'right'; // 'left' or 'right'
+        $bottom_offset = $options['bottom_offset'] ?? '20px';
+        $left_offset = $options['left_offset'] ?? '20px';
+        $right_offset = $options['right_offset'] ?? '20px';
+
+        // Decide position style
+        $side_offset_style = $position === 'left'
+            ? "left: {$left_offset}; right: auto;"
+            : "right: {$right_offset}; left: auto;";
+        
+
+        // Inline CSS for the chat button
+        $wpmesoche_inline_css = "
+            .lc-wpmethods-chat-toggle,
+            [type=button].lc-wpmethods-chat-btn {
+                height: {$height_width}px;
+                width: {$height_width}px;
+            }
+        
+            .lc-wpmethods-chat-container {
+                align-items: " . ($position === 'left' ? 'flex-start' : 'flex-end') . ";
+                bottom: {$bottom_offset};
+                {$side_offset_style}
+                z-index: 9999;
+            }
+        
+            .lc-wpmethods-chat-toggle {
+                color: {$icon_color};
+                background: " . ($toggle_g_color ? "linear-gradient(120deg, {$toggle_color} 50%, {$toggle_g_color} 100%)" : $toggle_color) . ";
+            }
+        
+            .lc-wpmethods-chat-toggle:hover {
+                background: {$hover_color};
+            }
+        
+            .lc-wpmethods-chat-btn i,
+            .lc-wpmethods-chat-toggle i {
+                pointer-events: none;
+                font-size: {$icon_size}px;
+            }
+        
+            .sfiw-icons {
+                flex-direction: " . ($position === 'left' ? 'row-reverse' : 'row') . ";
+            }
+        
+            .label-sfiw {
+                border-radius: " . ($position === 'left' ? '0px 20px 20px 0px' : '20px 0px 0px 20px') . ";
+                transform: translateY(-50%) " . ($position === 'left' ? 'translateX(-10px)' : 'translateX(10px)') . ";
+                " . ($position === 'left'
+                    ? "left: 65%; margin-left: 8px; padding-left: 25px;"
+                    : "right: 65%; margin-right: 8px; padding-right: 25px;") . "
+            }
+        
+            @keyframes lc-wpmethods-pulse {
+                0% {
+                    box-shadow: 0 0 0 0 {$pulse_animation_border_color};
+                    transform: scale(1);
+                }
+        
+                70% {
+                    transform: scale(1.2);
+                    box-shadow: 0 0 0 7px rgba(242, 105, 34, 0);
+                }
+        
+                100% {
+                    transform: scale(1);
+                    box-shadow: 0 0 0 0 rgba(242, 105, 34, 0);
+                }
+            }
+        ";
+        
+
+        wp_add_inline_style('lc-wpmethods-css', $wpmesoche_inline_css);
+
         wp_enqueue_script('lc-wpmethods-js', WPMESOCHE_WPMETHODS_URL . 'assets/js/front-end'. $min_suffix . '.js', ['jquery'], WPMESOCHE_PLUGIN_VERSION, true);
     }
 
@@ -31,38 +118,17 @@ class Wpmesoche_Front_End {
             'bg_color' => '#00DA62',
             's_bg_color' => '',
         ]];
+        
+        $toggle_icon_class = $options['toggle_icon_class'] ? $options['toggle_icon_class'] : 'fas fa-comment-dots';
 
         $limit   = apply_filters('wpmethods_social_chat_link_limit', 2);
 
-        $toggle_icon_class = $options['toggle_icon_class'] ? $options['toggle_icon_class'] : 'fas fa-comment-dots';
-        $toggle_color = $options['toggle_bg_color'] ? $options['toggle_bg_color'] : '#00DA62';
-        $toggle_g_color = $options['toggle_gbg_color'] ? $options['toggle_gbg_color'] : '';
-        $icon_color = $options['icon_color'] ? $options['icon_color'] : '#FFFFFF';
-        $icon_size = $options['icon_size'] ? $options['icon_size'] : '30';
-        $height_width = $options['height_width'] ? $options['height_width'] : '50';
-        $hover_color = $options['hover_color'] ?  $options['hover_color'] : '#128C7E';
-       
-        
-        $pulse_animation_border_color = $options['pulse_animation_border_color'] ?  $options['pulse_animation_border_color'] : '#00DA62';
-
-        // Position settings
-        $position = $options['position'] ?? 'right'; // 'left' or 'right'
-        $bottom_offset = $options['bottom_offset'] ?? '20px';
-        $left_offset = $options['left_offset'] ?? '20px';
-        $right_offset = $options['right_offset'] ?? '20px';
-
-        // Decide position style
-        $side_offset_style = $position === 'left'
-            ? "left: {$left_offset}; right: auto;"
-            : "right: {$right_offset}; left: auto;";
-        
-        
         if (empty($lc_wpmethods_links) || !is_array($lc_wpmethods_links)) {
             return; // Nothing to render
         }
         ?>
 
-        <div class="lc-wpmethods-chat-container" id="lcWpmethodsChatContainer"  style="bottom: <?php echo esc_attr($bottom_offset); ?>; <?php echo esc_attr($side_offset_style); ?> z-index: 9999;">
+        <div class="lc-wpmethods-chat-container" id="lcWpmethodsChatContainer">
             <div class="lc-wpmethods-chat-options" id="chatOptions">
                 <?php foreach (array_slice($lc_wpmethods_links, 0, $limit) as $link) : 
                     $url = !empty($link['url']) ? $link['url'] : 'https://wa.me/your-whatsapp-number';
@@ -106,70 +172,11 @@ class Wpmesoche_Front_End {
                     </div>
                 <?php endforeach; ?>
             </div>
-
-
-            <div class="lc-wpmethods-chat-toggle lc-wpmethods-pulse" id="lcWpmethodsChatToggle"  style="background: linear-gradient(120deg, <?php echo esc_attr($toggle_color);?> <?php echo $toggle_g_color ? '50%,' : '' ; echo esc_attr($toggle_g_color); ?> 100%);">
+         
+            <div class="lc-wpmethods-chat-toggle lc-wpmethods-pulse" id="lcWpmethodsChatToggle">
                 <i class="<?php echo esc_attr($toggle_icon_class); ?>" data-toggle-icon="<?php echo esc_attr($toggle_icon_class); ?>" id="lcWpmethodsChatIcon"></i>
             </div>
-
-            <style>
-                .lc-wpmethods-chat-toggle, [type=button].lc-wpmethods-chat-btn {
-                    height: <?php echo esc_attr($height_width); ?>px;
-                    width: <?php echo esc_attr($height_width); ?>px;
-                }
-                .lc-wpmethods-chat-container {
-                    align-items: <?php echo $position === 'left' ? 'flex-start' : 'flex-end'; ?>;
-                }
-                .lc-wpmethods-chat-toggle{
-                    color: <?php echo esc_attr($icon_color); ?>;
-                    background: <?php echo esc_attr($toggle_color); ?>;
-                }
-                .lc-wpmethods-chat-toggle:hover{
-                    background: <?php echo esc_attr($hover_color); ?>;
-                }
-
-                .lc-wpmethods-chat-btn i, .lc-wpmethods-chat-toggle i{
-                    pointer-events: none;
-                    font-size: <?php echo esc_attr($icon_size); ?>px;
-                }
-
-                .sfiw-icons {
-                    flex-direction: <?php echo $position === 'left' ? 'row-reverse' : 'row'; ?>;
-                }
-
-                .label-sfiw {
-                    border-radius: <?php echo $position === 'left' ? '0px 20px 20px 0px' : '20px 0px 0px 20px'; ?>;
-                    transform: translateY(-50%) <?php echo $position === 'left' ? 'translateX(-10px)' : 'translateX(10px)'; ?>;
-                    <?php if ($position === 'left'): ?>
-                        left: 65%;
-                        margin-left: 8px;
-                        padding-left: 25px;
-                    <?php else: ?>
-                        right: 65%;
-                        margin-right: 8px;
-                        padding-right: 25px;
-                    <?php endif; ?>
-                }
-
-             
-
-               @keyframes lc-wpmethods-pulse {
-                    0% {
-                        box-shadow: 0 0 0 0 <?php echo esc_attr($pulse_animation_border_color); ?>;
-                        transform: scale(1);
-                    }
-
-                    70% {
-                        transform: scale(1.2);
-                        box-shadow: 0 0 0 7px rgba(242, 105, 34, 0);
-                    }
-
-                    100% {
-                        transform: scale(1);
-                        box-shadow: 0 0 0 0 rgba(242, 105, 34, 0);
-                    }
-                }
-            </style>
+            
         </div>
         <?php
     }
