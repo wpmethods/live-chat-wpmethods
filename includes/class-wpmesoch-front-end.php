@@ -35,38 +35,40 @@ class Wpmesoch_Front_End {
 
         // Decide position style
         $side_offset_style = $position === 'left'
-            ? "left: {$left_offset}; right: auto;"
-            : "right: {$right_offset}; left: auto;";
+        ? 'left: ' . esc_attr($left_offset) . '; right: auto;'
+        : 'right: ' . esc_attr($right_offset) . '; left: auto;';
         
 
         // Inline CSS for the chat button
         $wpmesoch_inline_css = "
             .wpmesoch-chat-toggle,
             [type=button].wpmesoch-chat-btn {
-                height: {$height_width}px;
-                width: {$height_width}px;
+                height: " . esc_attr($height_width) . "px;
+                width: " . esc_attr($height_width) . "px;
             }
         
             .wpmesoch-chat-container {
                 align-items: " . ($position === 'left' ? 'flex-start' : 'flex-end') . ";
-                bottom: {$bottom_offset};
+                bottom: " . esc_attr($bottom_offset) . ";
                 {$side_offset_style}
                 z-index: 9999;
             }
         
             .wpmesoch-chat-toggle {
-                color: {$icon_color};
-                background: " . ($toggle_g_color ? "linear-gradient(120deg, {$toggle_color} 50%, {$toggle_g_color} 100%)" : $toggle_color) . ";
+                color: " . esc_attr($icon_color) . ";
+                background: " . ($toggle_g_color
+                    ? 'linear-gradient(120deg, ' . esc_attr($toggle_color) . ' 50%, ' . esc_attr($toggle_g_color) . ' 100%)'
+                    : esc_attr($toggle_color)) . ";
             }
         
             .wpmesoch-chat-toggle:hover {
-                background: {$hover_color};
+                background: " . esc_attr($hover_color) . ";
             }
         
             .wpmesoch-chat-btn i,
             .wpmesoch-chat-toggle i {
                 pointer-events: none;
-                font-size: {$icon_size}px;
+                font-size: " . esc_attr($icon_size) . "px;
             }
         
             .sfiw-icons {
@@ -77,16 +79,16 @@ class Wpmesoch_Front_End {
                 border-radius: " . ($position === 'left' ? '0px 20px 20px 0px' : '20px 0px 0px 20px') . ";
                 transform: translateY(-50%) " . ($position === 'left' ? 'translateX(-10px)' : 'translateX(10px)') . ";
                 " . ($position === 'left'
-                    ? "left: 65%; margin-left: 8px; padding-left: 25px;"
-                    : "right: 65%; margin-right: 8px; padding-right: 25px;") . "
+                    ? 'left: 65%; margin-left: 8px; padding-left: 25px;'
+                    : 'right: 65%; margin-right: 8px; padding-right: 25px;') . "
             }
         
             @keyframes wpmesoch-pulse {
                 0% {
-                    box-shadow: 0 0 0 0 {$pulse_animation_border_color};
+                    box-shadow: 0 0 0 0 " . esc_attr($pulse_animation_border_color) . ";
                     transform: scale(1);
                 }
-        
+            
                 70% {
                     transform: scale(1.2);
                     box-shadow: 0 0 0 7px rgba(242, 105, 34, 0);
@@ -121,7 +123,7 @@ class Wpmesoch_Front_End {
         
         $toggle_icon_class = $options['toggle_icon_class'] ? $options['toggle_icon_class'] : 'fas fa-comment-dots';
 
-        $limit   = apply_filters('wpmethods_social_chat_link_limit', 2);
+        $limit = apply_filters('wpmethods_social_chat_link_limit', 2);
 
         if (empty($wpmesoch_links) || !is_array($wpmesoch_links)) {
             return; // Nothing to render

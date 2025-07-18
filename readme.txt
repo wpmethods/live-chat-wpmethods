@@ -1,6 +1,6 @@
 === Wpmethods Social Chat Floating Icons ===
 Contributors: wpmethods, ajharrashed
-Tags: Social Chat Floating Icon, wordpress live chat, floating contact widget, messenger live chat, live chat icon
+Tags: Social Chat Floating Icon, live chat, facebook messenger, whatsapp live chat
 Requires at least: 5.9
 Tested up to: 6.8
 Requires PHP: 7.4
@@ -80,7 +80,23 @@ You, can set fontawesome icon and go to wp-admin>Chat Floating Icons>Help. Here 
 You, can set from wp-admin>Chat Floating Icons>Help. Here you will get docs
 
 
+== Screenshots ==
+
+1. Floating Chat Icon Widget: Add beautifully styled floating chat icons to any page or post.
+2. Fully Customizable Styles: Set your own icon color, background color (including gradients), and label text for each link.
+3. Support WooCommerce Product: If customers click on the link from the product page, then it will be automatically append product price, name, attributes, variations etc.
+4. No Coding Required: Simple and intuitive admin panel to manage all settings.
+5. Supports Popular Platforms: Easily link to WhatsApp, Messenger, Telegram, Skype, WeChat, Viber, and more.
+6. Font Awesome 6 Icon Support: Use any Font Awesome 6 icon class to represent your social or chat platform.
+7. Customers can send you automatically product name, price, etc.
+
+
+
 == Changelog ==
 
 = 1.0.0 =
 * Plugin initial release
+
+== Upgrade Notice ==
+= 1.0.0 =
+After updating, go to Chat Floating Icons> Active License and activate your license key to continue using Pro features.
